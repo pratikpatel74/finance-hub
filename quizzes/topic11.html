@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" data-theme="dark"><script>try{var _t=localStorage.getItem("theme");if(_t)document.documentElement.setAttribute("data-theme",_t);}catch(e){}</script>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 11 Quiz – Earnings, Tax &amp; National Insurance</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#09090f;--surface:#111118;--card:#16161e;--border:#2a2a38;--border-hi:#3d3d52;--text:#f0efff;--muted:#8b8aab;--dim:#55546e;--gold:#e8b84b;--gold-bg:rgba(232,184,75,0.10);--accent:#c084fc;--accent-bg:rgba(192,132,252,0.12);--correct:#34d399;--correct-bg:rgba(52,211,153,0.12);--wrong:#f87171;--wrong-bg:rgba(248,113,113,0.12);}
+[data-theme="light"]{--bg:#f5f4f0;--surface:#eeede8;--card:#fff;--border:#dddbd4;--border-hi:#c8c5bc;--text:#1a1814;--muted:#706c60;--dim:#a09c90;--gold:#b8861a;--gold-bg:rgba(184,134,26,0.08);--accent:#7c3aed;--accent-bg:rgba(124,58,237,0.10);--correct:#059669;--correct-bg:rgba(5,150,105,0.10);--wrong:#dc2626;--wrong-bg:rgba(220,38,38,0.10);}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(9,9,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:52px}
+[data-theme="light"] .topbar{background:rgba(245,244,240,0.88)}
+.topbar-brand{font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;display:flex;align-items:center;gap:10px}
+.topbar-brand span{font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:2px 8px}
+.back-link{font-size:0.78rem;font-weight:600;color:var(--muted);text-decoration:none}
+.back-link:hover{color:var(--text)}
+.theme-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.timer-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0 12px;height:34px;cursor:pointer;font-size:0.72rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.timer-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.container{max-width:680px;margin:0 auto;padding:48px 20px 80px}
+.quiz-header{text-align:center;margin-bottom:40px}
+.quiz-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.quiz-title{font-size:1.9rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px}
+.quiz-sub{color:var(--muted);font-size:0.88rem}
+.progress-bar-wrap{background:var(--surface);border-radius:99px;height:6px;margin-bottom:32px;overflow:hidden}
+.progress-bar{height:100%;background:var(--accent);border-radius:99px;transition:width 0.4s ease}
+.progress-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--dim);margin-bottom:8px}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 28px 24px;margin-bottom:20px}
+.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.q-timer{font-size:0.8rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.q-timer.warn{color:var(--wrong)}
+.q-text{font-size:1.05rem;font-weight:600;line-height:1.45;margin-bottom:22px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:0.9rem;font-weight:500;cursor:pointer;text-align:left;color:var(--text);transition:border-color 0.15s,background 0.15s;display:flex;align-items:center;gap:12px}
+.option:hover:not(:disabled){border-color:var(--border-hi);background:var(--card)}
+.option.correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.option.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.option:disabled{cursor:default}
+.opt-letter{width:24px;height:24px;border-radius:6px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0}
+.option.correct .opt-letter{background:var(--correct);border-color:var(--correct);color:#fff}
+.option.wrong .opt-letter{background:var(--wrong);border-color:var(--wrong);color:#fff}
+.feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:0.85rem;font-weight:500;display:none}
+.feedback.show{display:block}
+.feedback.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
+.feedback.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.key-hint{font-size:0.7rem;color:var(--dim);text-align:right;margin-top:8px}
+.actions{display:flex;justify-content:flex-end;margin-top:20px}
+.btn-next{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:0.88rem;font-weight:700;cursor:pointer;display:none}
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px 28px;text-align:center;display:none}
+.result-score{font-size:3.5rem;font-weight:800;letter-spacing:-0.04em;color:var(--accent);line-height:1}
+.result-out{font-size:1rem;color:var(--muted);margin:6px 0 4px}
+.result-msg{font-size:1.05rem;font-weight:600;margin-bottom:28px}
+.result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-missed{background:rgba(248,113,113,0.12);color:#f87171;border:1px solid #f87171;border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-hub{background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-hub:hover{border-color:var(--border-hi);color:var(--text)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-brand"><span>LO7</span>Earnings, Tax &amp; NI</div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button class="timer-btn" id="timer-toggle" onclick="toggleTimer()">⏱ Timer: Off</button>
+    <a class="back-link" href="../index.html">← Hub</a>
+    <button class="theme-btn" onclick="toggleTheme()">☀️</button>
+  </div>
+</div>
+<div class="container">
+  <div class="quiz-header">
+    <div class="quiz-eyebrow">Unit 1 · LO7</div>
+    <h1 class="quiz-title">Earnings, Tax &amp; National Insurance</h1>
+    <p class="quiz-sub">10 questions drawn from a pool of 22 · Press 1–4 to answer, Enter for next</p>
+  </div>
+  <div class="progress-label"><span id="prog-text">Question 1 of 10</span><span id="prog-score">Score: 0</span></div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:10%"></div></div>
+  <div id="quiz-area"></div>
+  <div class="key-hint">Keyboard: 1–4 to answer · Enter or Space to advance</div>
+  <div class="actions"><button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button></div>
+  <div class="result-card" id="result"></div>
+</div>
+<script>
+const TOPIC_ID='topic11';const DRAW=10;
+const POOL=[
+  {q:"The National Living Wage rate for workers aged 21 and over (2024/25) is:",opts:["£9.50 per hour","£10.42 per hour","£11.44 per hour","£12.00 per hour"],ans:2,exp:"From April 2024, the National Living Wage (NLW) for workers aged 21 and over is £11.44 per hour — a significant increase from £10.42. The NLW is the statutory minimum for this age group and is reviewed annually by the Low Pay Commission."},
+  {q:"The National Minimum Wage rate for workers aged 18–20 (2024/25) is:",opts:["£6.40 per hour","£8.60 per hour","£10.18 per hour","£11.44 per hour"],ans:1,exp:"Workers aged 18–20 are entitled to £8.60 per hour from April 2024. This is lower than the National Living Wage (£11.44) that applies to those aged 21 and over. The rate for under-18s and apprentices is £6.40 per hour."},
+  {q:"The income tax personal allowance for 2024/25 is:",opts:["£10,000","£11,000","£12,570","£15,000"],ans:2,exp:"The personal allowance is £12,570 — the amount of income earned before income tax is payable. It has been frozen at this level since 2021/22 and is set to remain frozen until 2028. Individuals with income over £100,000 see the allowance reduced by £1 for every £2 over that threshold."},
+  {q:"The basic rate of income tax in England (2024/25) is:",opts:["10%","20%","25%","40%"],ans:1,exp:"The basic rate of income tax is 20%, applied to taxable income between £12,571 and £50,270 (the personal allowance plus the basic rate band of £37,700). Higher rate (40%) applies from £50,271 to £125,140. Additional rate (45%) applies above £125,140."},
+  {q:"PAYE stands for:",opts:["Pay As You Earn — income tax deducted automatically from wages by an employer","Personal Annual Year End — a tax return for individuals","Pension and Annual Year Earnings — a pension calculation system","Payment Allowance Year End — an NI credit scheme"],ans:0,exp:"PAYE (Pay As You Earn) is the system by which employers deduct income tax and National Insurance directly from employees' wages before paying them. HMRC tells the employer how much to deduct via a tax code. The employee receives their net (after-tax) pay without needing to calculate or submit a tax return in most cases."},
+  {q:"A P60 is:",opts:["A form issued when leaving a job, summarising pay and tax to the leaving date","An annual summary of total pay, tax deducted, and NI paid in a tax year, issued by an employer","A form used to claim a tax refund","A document issued by HMRC setting out a person's tax code"],ans:1,exp:"A P60 is issued by an employer at the end of each tax year (by 31 May) for employees still in that employment. It shows total earnings, income tax deducted, and NI paid for the year. It is needed to verify tax paid, claim tax refunds, or as proof of income for mortgages or benefits."},
+  {q:"A P45 is issued:",opts:["At the end of every tax year","When a new employee joins a company","When an employee leaves a job, showing pay and tax to the leaving date","Annually by HMRC to all taxpayers"],ans:2,exp:"A P45 is given by an employer when an employee leaves (or is made redundant). It shows total pay and tax deducted in that tax year up to the leaving date, plus the employee's tax code. The new employer uses it to apply the correct tax code. If you leave without receiving a P45, you may be put on an emergency tax code."},
+  {q:"National Insurance (NI) contributions for employees in 2024/25 are charged at what rate on earnings between the primary threshold (£242/week) and upper earnings limit (£967/week)?",opts:["2%","6%","8%","12%"],ans:2,exp:"Employee Class 1 NI contributions are charged at 8% on weekly earnings between £242 (primary threshold) and £967 (upper earnings limit) for 2024/25. Earnings above £967/week attract a 2% rate. NI was cut from 12% to 10% in January 2024, then to 8% in April 2024."},
+  {q:"National Insurance contributions fund which of the following?",opts:["Local council services only","State Pension, NHS, and certain state benefits such as Job Seeker's Allowance","Income tax rebates","The education system exclusively"],ans:1,exp:"NI contributions help fund the State Pension (the primary purpose), the NHS, and certain contributory benefits such as Job Seeker's Allowance and Employment and Support Allowance. NI is separate from income tax, though both are collected via PAYE. The number of qualifying NI years determines State Pension entitlement."},
+  {q:"A tax code tells an employer:",opts:["How much income tax to refund to the employee","How much income the employee can earn before paying tax, and at what rate","The employee's NI category","The employee's pension contribution rate"],ans:1,exp:"A tax code (e.g., 1257L) encodes the employee's tax-free personal allowance and any adjustments (e.g., for benefits in kind or underpaid tax). The employer uses it to calculate the correct amount of PAYE tax to deduct each pay period. An incorrect tax code leads to over- or under-payment of tax."},
+  {q:"Which of the following workers is legally entitled to the National Living Wage?",opts:["A 19-year-old apprentice in their first year","A 17-year-old part-time worker","A 22-year-old full-time employee earning above minimum wage","A 20-year-old in their first job"],ans:2,exp:"The National Living Wage applies to workers aged 21 and over. A 22-year-old is entitled to at least £11.44/hour. A 19-year-old apprentice in year 1 is entitled only to the apprentice rate (£6.40). A 17-year-old gets the under-18 rate (£6.40). A 20-year-old gets the 18–20 rate (£8.60)."},
+  {q:"Gross pay differs from net pay in that:",opts:["Gross pay is received after deductions; net pay is before deductions","Gross pay is total earnings before deductions; net pay is take-home pay after tax and NI","Gross pay only includes overtime; net pay includes salary","Gross pay is the hourly rate; net pay is the annual salary"],ans:1,exp:"Gross pay is total earnings before any deductions. Net pay (take-home pay) is what is received after income tax, National Insurance, pension contributions, and any other deductions (e.g., student loan repayments) have been subtracted. Understanding the difference is key to budgeting from actual income received."},
+  {q:"Which of the following would appear on a payslip?",opts:["Employee's bank account password","Tax code, gross pay, NI contributions, income tax deducted, and net pay","National Insurance number only","Only the net pay amount"],ans:1,exp:"A payslip must by law show: gross pay, itemised deductions (income tax, NI, pension contributions), tax code, NI number, and net pay. It may also show hours worked, overtime, expenses, and year-to-date totals. Payslips can be paper or electronic but must be provided on or before pay day."},
+  {q:"The higher rate of income tax (40%) applies to taxable income in England between:",opts:["£12,571 and £37,700","£37,701 and £50,270","£50,271 and £125,140","Over £125,140"],ans:2,exp:"The higher rate (40%) applies to taxable income between £50,271 and £125,140 in 2024/25. Taxable income is gross income minus the personal allowance (£12,570), so this band starts when gross income exceeds £50,270. Above £125,140, the additional rate of 45% applies and the personal allowance is fully withdrawn."},
+  {q:"The maximum number of hours per week a worker under 18 can legally work in the UK is:",opts:["35 hours","40 hours","48 hours","There is no legal maximum for under-18s"],ans:1,exp:"Workers under 18 are subject to the Working Time Regulations for young workers: a maximum of 8 hours per day and 40 hours per week. They are also entitled to at least 30 minutes rest after 4.5 hours of work. These protections are stricter than those for adults (48 hours/week average under the adult Working Time Directive)."},
+  {q:"Self-employed workers pay which class of National Insurance based on annual profits?",opts:["Class 1","Class 2 and Class 4","Class 3","Class 5"],ans:1,exp:"Self-employed people pay Class 4 NI (6% on profits between £12,570 and £50,270; 2% above) and, if profits exceed the small profits threshold (£6,725), Class 2 NI (£3.45/week, 2024/25). From April 2024, Class 2 became voluntary for those above the threshold. Employed workers pay Class 1."},
+  {q:"What is the purpose of a Self Assessment tax return?",opts:["To apply for a tax code","To declare income not taxed through PAYE — such as self-employment, rental, or investment income — so the correct tax can be calculated","To claim National Insurance credits","To register for VAT"],ans:1,exp:"Self Assessment is required for people with income not taxed at source through PAYE — the self-employed, landlords, high earners (over £100,000), those with significant investment income, or those receiving untaxed income. The return is filed annually (31 January deadline online) and calculates the tax owed or refundable."},
+  {q:"The tax year in the UK runs from:",opts:["1 January to 31 December","1 March to 28 February","6 April to 5 April the following year","1 April to 31 March"],ans:2,exp:"The UK tax year runs from 6 April to 5 April the following year — an unusual date with historical roots. So 2024/25 runs from 6 April 2024 to 5 April 2025. The self-assessment deadline for online filing is 31 January following the end of the tax year (31 January 2026 for the 2024/25 return)."},
+  {q:"An employee earns £30,000 gross per year. How much income tax will they pay in 2024/25 (ignoring other allowances)?",opts:["£6,000","£3,486","£4,286","£3,000"],ans:1,exp:"Taxable income = £30,000 − £12,570 (personal allowance) = £17,430. Income tax = £17,430 × 20% (basic rate) = £3,486. The full £30,000 is NOT all taxed — only the portion above the personal allowance counts as taxable income. Distractors: £6,000 incorrectly applies 20% to the whole salary; £4,286 and £3,000 use wrong figures."},
+  {q:"The apprentice National Minimum Wage rate (2024/25) applies to:",opts:["All apprentices regardless of age","Apprentices aged under 19, or aged 19+ who are in the first year of their apprenticeship","All workers under 18","Only degree-level apprentices"],ans:1,exp:"The apprentice rate (£6.40/hour, 2024/25) applies to apprentices who are either under 19, OR aged 19 or over and in the first year of their apprenticeship. Once an apprentice turns 19 AND has completed their first year, they are entitled to the National Minimum Wage rate for their age group."},
+  {q:"Which of the following is NOT deducted from gross pay via PAYE?",opts:["Income tax","Employee National Insurance","Council tax","Pension contributions (for auto-enrolled employees)"],ans:2,exp:"Council tax is a local tax paid directly by individuals (or via their landlord) — it is NOT deducted from pay via PAYE. PAYE deducts income tax and NI automatically. Pension contributions for auto-enrolled employees are typically also deducted via payroll. Student loan repayments (Plan 1/2/4/5) are also deducted via PAYE once earnings exceed the relevant threshold."},
+  {q:"Class 3 National Insurance contributions are:",opts:["Compulsory for all employees","Voluntary contributions made to fill gaps in NI records and protect State Pension entitlement","Paid only by the self-employed","Deducted automatically via PAYE"],ans:1,exp:"Class 3 NI contributions are voluntary payments (£17.45/week in 2024/25) that individuals can make to fill gaps in their NI record — for example, years spent caring for children, studying, or living abroad. Filling gaps protects or increases the State Pension. HMRC provides a State Pension forecast so people can check whether topping up is worthwhile."}
+];
+POOL.forEach((q,i)=>q._id=i);
+let sessionQ=[],cur=0,score=0,answered=false,finished=false;
+let timerOn=false,timerSecs=60,timerInterval=null;
+const retryMissed=location.search.includes('retry=missed');
+try{timerOn=localStorage.getItem(TOPIC_ID+'_timer')==='true';}catch(e){}
+function updateTimerBtn(){const b=document.getElementById('timer-toggle');if(!b)return;b.textContent='⏱ Timer: '+(timerOn?'On':'Off');b.className='timer-btn'+(timerOn?' active':'');}
+function initSession(){
+  let pool;
+  if(retryMissed){
+    try{const m=JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]');pool=POOL.filter(q=>m.includes(q._id));}catch(e){pool=[];}
+    if(!pool.length)pool=[...POOL];
+  }else{
+    pool=[...POOL];
+    try{localStorage.removeItem(TOPIC_ID+'_missed');}catch(e){}
+  }
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  sessionQ=pool.slice(0,Math.min(DRAW,pool.length));
+  cur=0;score=0;answered=false;finished=false;
+  updateTimerBtn();render();
+}
+function render(){
+  const q=sessionQ[cur];const L=['A','B','C','D'];
+  document.getElementById('prog-text').textContent=`Question ${cur+1} of ${sessionQ.length}`;
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  document.getElementById('prog-bar').style.width=`${((cur+1)/sessionQ.length)*100}%`;
+  document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num"><span>Question ${cur+1}</span>${timerOn?`<span class="q-timer" id="q-timer">${timerSecs}s</span>`:''}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${L[i]}</span>${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`;
+  document.getElementById('btn-next').style.display='none';
+  answered=false;
+  if(timerOn)startTimer();
+}
+function startTimer(){
+  clearInterval(timerInterval);timerSecs=60;
+  timerInterval=setInterval(()=>{
+    timerSecs--;
+    const el=document.getElementById('q-timer');
+    if(el){el.textContent=timerSecs+'s';if(timerSecs<=10)el.classList.add('warn');}
+    if(timerSecs<=0){clearInterval(timerInterval);pick(-1);}
+  },1000);
+}
+function pick(i){
+  if(answered)return;answered=true;clearInterval(timerInterval);
+  const q=sessionQ[cur];const fb=document.getElementById('feedback');
+  document.querySelectorAll('.option').forEach(b=>b.disabled=true);
+  if(i===q.ans){
+    score++;
+    if(i>=0)document.getElementById(`opt${i}`).className='option correct';
+    fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;
+  }else{
+    if(i>=0)document.getElementById(`opt${i}`).className='option wrong';
+    document.getElementById(`opt${q.ans}`).className='option correct';
+    fb.className='feedback show wrong';fb.textContent=(i===-1?'⏱ Time\'s up! ':'✗ ')+q.exp;
+    try{const m=JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]');if(!m.includes(q._id))m.push(q._id);localStorage.setItem(TOPIC_ID+'_missed',JSON.stringify(m));}catch(e){}
+  }
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  const nb=document.getElementById('btn-next');nb.style.display='block';nb.textContent=cur<sessionQ.length-1?'Next →':'See Results';
+}
+function nextQ(){cur++;if(cur>=sessionQ.length){showResult();return;}render();}
+function showResult(){
+  finished=true;clearInterval(timerInterval);
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('btn-next').style.display='none';
+  document.querySelector('.progress-label').style.display='none';
+  document.querySelector('.progress-bar-wrap').style.display='none';
+  document.querySelector('.key-hint').style.display='none';
+  const pct=Math.round((score/sessionQ.length)*100);
+  const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';
+  try{localStorage.setItem(TOPIC_ID+'_last',JSON.stringify({score,total:sessionQ.length,pct,date:new Date().toISOString()}));}catch(e){}
+  let missedCount=0;try{missedCount=(JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]')).length;}catch(e){}
+  const base=location.href.split('?')[0];
+  const r=document.getElementById('result');r.style.display='block';
+  r.innerHTML=`<div class="result-score">${score}/${sessionQ.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div><div class="result-actions"><a class="btn-retry" href="${base}">↺ New Quiz</a>${missedCount>0?`<a class="btn-missed" href="${base}?retry=missed">↯ Retry ${missedCount} missed</a>`:''}<a class="btn-hub" href="../index.html">← Hub</a></div>`;
+}
+function toggleTimer(){timerOn=!timerOn;try{localStorage.setItem(TOPIC_ID+'_timer',timerOn);}catch(e){}updateTimerBtn();}
+function toggleTheme(){const c=document.documentElement.getAttribute('data-theme')||'dark';const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.querySelector('.theme-btn').textContent=n==='dark'?'☀️':'🌙';try{localStorage.setItem('theme',n);}catch(e){}}
+document.addEventListener('keydown',e=>{
+  if(finished)return;
+  if(!answered){if(e.key==='1')pick(0);else if(e.key==='2')pick(1);else if(e.key==='3')pick(2);else if(e.key==='4')pick(3);}
+  else if((e.key==='Enter'||e.key===' ')&&document.getElementById('btn-next').style.display!=='none'){e.preventDefault();nextQ();}
+});
+initSession();
+</script>
+</body>
+</html>
