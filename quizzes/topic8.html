@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 8 Quiz – Consumer Protection</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#09090f;--surface:#111118;--card:#16161e;--border:#2a2a38;--border-hi:#3d3d52;--text:#f0efff;--muted:#8b8aab;--dim:#55546e;--gold:#e8b84b;--gold-bg:rgba(232,184,75,0.10);--accent:#f87171;--accent-bg:rgba(248,113,113,0.12);--correct:#34d399;--correct-bg:rgba(52,211,153,0.12);--wrong:#f87171;--wrong-bg:rgba(248,113,113,0.12);}
+[data-theme="light"]{--bg:#f5f4f0;--surface:#eeede8;--card:#fff;--border:#dddbd4;--border-hi:#c8c5bc;--text:#1a1814;--muted:#706c60;--dim:#a09c90;--gold:#b8861a;--gold-bg:rgba(184,134,26,0.08);--accent:#dc2626;--accent-bg:rgba(220,38,38,0.10);--correct:#059669;--correct-bg:rgba(5,150,105,0.10);--wrong:#dc2626;--wrong-bg:rgba(220,38,38,0.10);}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(9,9,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:52px}
+[data-theme="light"] .topbar{background:rgba(245,244,240,0.88)}
+.topbar-brand{font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;display:flex;align-items:center;gap:10px}
+.topbar-brand span{font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:2px 8px}
+.back-link{font-size:0.78rem;font-weight:600;color:var(--muted);text-decoration:none}
+.back-link:hover{color:var(--text)}
+.theme-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.container{max-width:680px;margin:0 auto;padding:48px 20px 80px}
+.quiz-header{text-align:center;margin-bottom:40px}
+.quiz-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.quiz-title{font-size:1.9rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px}
+.quiz-sub{color:var(--muted);font-size:0.88rem}
+.progress-bar-wrap{background:var(--surface);border-radius:99px;height:6px;margin-bottom:32px;overflow:hidden}
+.progress-bar{height:100%;background:var(--accent);border-radius:99px;transition:width 0.4s ease}
+.progress-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--dim);margin-bottom:8px}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 28px 24px;margin-bottom:20px}
+.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.q-text{font-size:1.05rem;font-weight:600;line-height:1.45;margin-bottom:22px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:0.9rem;font-weight:500;cursor:pointer;text-align:left;color:var(--text);transition:border-color 0.15s,background 0.15s;display:flex;align-items:center;gap:12px}
+.option:hover:not(:disabled){border-color:var(--border-hi);background:var(--card)}
+.option.correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.option.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.option:disabled{cursor:default}
+.opt-letter{width:24px;height:24px;border-radius:6px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0}
+.option.correct .opt-letter{background:var(--correct);border-color:var(--correct);color:#fff}
+.option.wrong .opt-letter{background:var(--wrong);border-color:var(--wrong);color:#fff}
+.feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:0.85rem;font-weight:500;display:none}
+.feedback.show{display:block}
+.feedback.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
+.feedback.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.actions{display:flex;justify-content:flex-end;margin-top:20px}
+.btn-next{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:0.88rem;font-weight:700;cursor:pointer;display:none}
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px 28px;text-align:center;display:none}
+.result-score{font-size:3.5rem;font-weight:800;letter-spacing:-0.04em;color:var(--accent);line-height:1}
+.result-out{font-size:1rem;color:var(--muted);margin:6px 0 4px}
+.result-msg{font-size:1.05rem;font-weight:600;margin-bottom:28px}
+.result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-hub{background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-hub:hover{border-color:var(--border-hi);color:var(--text)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-brand"><span>Topic 8</span>Consumer Protection</div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a class="back-link" href="../index.html">← Hub</a>
+    <button class="theme-btn" onclick="toggleTheme()">☀️</button>
+  </div>
+</div>
+<div class="container">
+  <div class="quiz-header">
+    <div class="quiz-eyebrow">Unit 1 · Topic 8</div>
+    <h1 class="quiz-title">Consumer Protection</h1>
+    <p class="quiz-sub">10 questions · Select the best answer for each</p>
+  </div>
+  <div class="progress-label"><span id="prog-text">Question 1 of 10</span><span id="prog-score">Score: 0</span></div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:10%"></div></div>
+  <div id="quiz-area"></div>
+  <div class="actions"><button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button></div>
+  <div class="result-card" id="result"></div>
+</div>
+<script>
+const QS=[
+  {q:"The Financial Services Compensation Scheme (FSCS) protects eligible deposits up to:",opts:["£50,000 per person per bank","£75,000 per person per bank","£85,000 per person per authorised institution","£100,000 per person per bank"],ans:2,exp:"The FSCS protects up to £85,000 per person per authorised institution for eligible deposits. If a firm fails, the FSCS pays out automatically — savers do not need to claim."},
+  {q:"The Financial Conduct Authority (FCA) is primarily responsible for:",opts:["Setting the Bank of England base rate","Prudential regulation of large banks and insurers","Conduct regulation — ensuring firms treat customers fairly","Issuing government gilts and bonds"],ans:2,exp:"The FCA regulates the conduct of financial services firms — ensuring markets work well and consumers get fair treatment. It can fine firms, withdraw authorisations, and ban individuals."},
+  {q:"The Prudential Regulation Authority (PRA) is a subsidiary of:",opts:["HM Treasury","The FCA","The Bank of England","The Competition and Markets Authority"],ans:2,exp:"The PRA is part of the Bank of England. It is responsible for the prudential (financial soundness) regulation of banks, building societies, credit unions, insurers, and major investment firms."},
+  {q:"The Financial Ombudsman Service (FOS) can award compensation of up to:",opts:["£85,000","£170,000","£430,000","£1,000,000"],ans:2,exp:"The FOS can award up to £430,000 for complaints about acts or omissions by firms on or after 1 April 2019. The FOS is free to consumers and its decisions are binding on firms (but not consumers)."},
+  {q:"What is 'ring-fencing' in banking?",opts:["The FCA banning a firm from operating","Separating retail banking from investment banking activities","A rule requiring banks to keep 10% of deposits as reserves","Insurance against bank losses"],ans:1,exp:"Ring-fencing (introduced in 2019 for large UK banks) separates everyday retail banking — current accounts, mortgages, savings — from riskier investment banking activities, protecting ordinary customers if the investment arm fails."},
+  {q:"Which body handles complaints that cannot be resolved directly with a financial firm?",opts:["The FCA","The PRA","The Financial Ombudsman Service","The Competition and Markets Authority"],ans:2,exp:"The Financial Ombudsman Service (FOS) is the independent body for resolving disputes between consumers and financial firms. Consumers must complain to the firm first; if unresolved after 8 weeks they can refer to the FOS."},
+  {q:"Under FCA rules, firms must treat customers fairly under the principle known as:",opts:["Know Your Customer (KYC)","Consumer Duty","Anti-Money Laundering (AML)","Basel III"],ans:1,exp:"The FCA's Consumer Duty (effective July 2023) sets a higher standard — firms must deliver good outcomes for retail customers across four areas: products and services, price and value, consumer understanding, and consumer support."},
+  {q:"The Competition and Markets Authority (CMA) can investigate:",opts:["Individual financial adviser misconduct","Mergers that could reduce competition","Money laundering offences","PPI mis-selling claims"],ans:1,exp:"The CMA is the UK's primary competition regulator. It investigates mergers, markets, and anti-competitive behaviour to ensure consumers benefit from fair competition. It is separate from the FCA."},
+  {q:"If a bank is authorised by the PRA and regulated by the FCA, which body should a customer complain to about a mis-sold mortgage?",opts:["The PRA","The Bank of England","The FCA directly","The Financial Ombudsman Service (after complaining to the bank first)"],ans:3,exp:"For individual complaints, customers must first complain to the firm. If unresolved after 8 weeks (or if a final response is received), the matter can be referred to the FOS — not the FCA. The FCA does not handle individual complaints."},
+  {q:"Which of the following best describes a 'voluntary code of conduct' in financial services?",opts:["A legally binding rule enforced by the FCA","An industry-agreed standard that firms choose to follow, not enforced by law","A regulation passed by Parliament","A code that only applies to credit unions"],ans:1,exp:"Voluntary codes are industry-agreed best-practice standards that firms opt into. They are not legally binding but firms that sign up are expected to comply. Examples include the Lending Standards Board codes. They supplement (not replace) FCA regulation."}
+];
+let cur=0,score=0,answered=false;
+function render(){const q=QS[cur];const L=['A','B','C','D'];document.getElementById('prog-text').textContent=`Question ${cur+1} of ${QS.length}`;document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('prog-bar').style.width=`${((cur+1)/QS.length)*100}%`;document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num">Question ${cur+1}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${L[i]}</span>${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`;document.getElementById('btn-next').style.display='none';answered=false;}
+function pick(i){if(answered)return;answered=true;const q=QS[cur];const fb=document.getElementById('feedback');document.querySelectorAll('.option').forEach(b=>b.disabled=true);if(i===q.ans){score++;document.getElementById(`opt${i}`).className='option correct';fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;}else{document.getElementById(`opt${i}`).className='option wrong';document.getElementById(`opt${q.ans}`).className='option correct';fb.className='feedback show wrong';fb.textContent='✗ '+q.exp;}document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('btn-next').style.display='block';document.getElementById('btn-next').textContent=cur<QS.length-1?'Next →':'See Results';}
+function nextQ(){cur++;if(cur>=QS.length){showResult();return;}render();}
+function showResult(){document.getElementById('quiz-area').style.display='none';document.getElementById('btn-next').style.display='none';document.querySelector('.progress-label').style.display='none';document.querySelector('.progress-bar-wrap').style.display='none';const pct=Math.round((score/QS.length)*100);const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';const r=document.getElementById('result');r.style.display='block';r.innerHTML=`<div class="result-score">${score}/${QS.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div><div class="result-actions"><a class="btn-retry" href="topic8.html">↺ Retry</a><a class="btn-hub" href="../index.html">← Back to Hub</a></div>`;}
+function toggleTheme(){const c=document.documentElement.getAttribute('data-theme')||'dark';const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.querySelector('.theme-btn').textContent=n==='dark'?'☀️':'🌙';}
+render();
+</script>
+</body>
+</html>

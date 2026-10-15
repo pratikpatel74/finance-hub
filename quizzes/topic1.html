@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 1 Quiz – Purposes of Money</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#09090f;--surface:#111118;--card:#16161e;--border:#2a2a38;--border-hi:#3d3d52;
+  --text:#f0efff;--muted:#8b8aab;--dim:#55546e;
+  --gold:#e8b84b;--gold-bg:rgba(232,184,75,0.10);
+  --accent:#818cf8;--accent-bg:rgba(129,140,248,0.12);--accent-glow:rgba(129,140,248,0.25);
+  --correct:#34d399;--correct-bg:rgba(52,211,153,0.12);
+  --wrong:#f87171;--wrong-bg:rgba(248,113,113,0.12);
+}
+[data-theme="light"]{
+  --bg:#f5f4f0;--surface:#eeede8;--card:#fff;--border:#dddbd4;--border-hi:#c8c5bc;
+  --text:#1a1814;--muted:#706c60;--dim:#a09c90;
+  --gold:#b8861a;--gold-bg:rgba(184,134,26,0.08);
+  --accent:#6366f1;--accent-bg:rgba(99,102,241,0.10);--accent-glow:rgba(99,102,241,0.20);
+  --correct:#059669;--correct-bg:rgba(5,150,105,0.10);
+  --wrong:#dc2626;--wrong-bg:rgba(220,38,38,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(9,9,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:52px}
+[data-theme="light"] .topbar{background:rgba(245,244,240,0.88)}
+.topbar-brand{font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;display:flex;align-items:center;gap:10px}
+.topbar-brand span{font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:2px 8px}
+.back-link{font-size:0.78rem;font-weight:600;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color 0.15s}
+.back-link:hover{color:var(--text)}
+.theme-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+
+.container{max-width:680px;margin:0 auto;padding:48px 20px 80px}
+.quiz-header{text-align:center;margin-bottom:40px}
+.quiz-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.quiz-title{font-size:1.9rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px}
+.quiz-sub{color:var(--muted);font-size:0.88rem}
+
+.progress-bar-wrap{background:var(--surface);border-radius:99px;height:6px;margin-bottom:32px;overflow:hidden}
+.progress-bar{height:100%;background:var(--accent);border-radius:99px;transition:width 0.4s ease}
+.progress-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--dim);margin-bottom:8px}
+
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 28px 24px;margin-bottom:20px}
+.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.q-text{font-size:1.05rem;font-weight:600;line-height:1.45;margin-bottom:22px}
+
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:0.9rem;font-weight:500;cursor:pointer;text-align:left;color:var(--text);transition:border-color 0.15s,background 0.15s;display:flex;align-items:center;gap:12px}
+.option:hover:not(:disabled){border-color:var(--border-hi);background:var(--card)}
+.option.correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.option.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.option:disabled{cursor:default}
+.opt-letter{width:24px;height:24px;border-radius:6px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0;letter-spacing:0.05em}
+.option.correct .opt-letter{background:var(--correct);border-color:var(--correct);color:#fff}
+.option.wrong .opt-letter{background:var(--wrong);border-color:var(--wrong);color:#fff}
+
+.feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:0.85rem;font-weight:500;display:none}
+.feedback.show{display:block}
+.feedback.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
+.feedback.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+
+.actions{display:flex;justify-content:flex-end;margin-top:20px}
+.btn-next{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:0.88rem;font-weight:700;cursor:pointer;display:none;transition:opacity 0.15s}
+.btn-next:hover{opacity:0.85}
+
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px 28px;text-align:center;display:none}
+.result-score{font-size:3.5rem;font-weight:800;letter-spacing:-0.04em;color:var(--accent);line-height:1}
+.result-out{font-size:1rem;color:var(--muted);margin:6px 0 4px}
+.result-msg{font-size:1.05rem;font-weight:600;margin-bottom:28px}
+.result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;cursor:pointer;transition:opacity 0.15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-hub{background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;cursor:pointer;transition:border-color 0.15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-hub:hover{border-color:var(--border-hi);color:var(--text)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-brand"><span>Topic 1</span>Purposes of Money</div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a class="back-link" href="../index.html">← Hub</a>
+    <button class="theme-btn" onclick="toggleTheme()">☀️</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="quiz-header">
+    <div class="quiz-eyebrow">Unit 1 · Topic 1</div>
+    <h1 class="quiz-title">Purposes of Money</h1>
+    <p class="quiz-sub">10 questions · Select the best answer for each</p>
+  </div>
+
+  <div class="progress-label">
+    <span id="prog-text">Question 1 of 10</span>
+    <span id="prog-score">Score: 0</span>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:10%"></div></div>
+
+  <div id="quiz-area"></div>
+  <div class="actions"><button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button></div>
+  <div class="result-card" id="result"></div>
+</div>
+
+<script>
+const QS = [
+  {q:"Which function of money eliminates the need for barter by being universally accepted in exchange for goods and services?",
+   opts:["Store of value","Unit of account","Medium of exchange","Standard of deferred payment"],ans:2,
+   exp:"Medium of exchange — money is accepted by all parties, removing the double coincidence of wants problem in barter."},
+  {q:"Which function of money allows debts and future obligations to be expressed and settled in a common unit?",
+   opts:["Store of value","Standard of deferred payment","Medium of exchange","Unit of account"],ans:1,
+   exp:"Standard of deferred payment — money lets us agree on a price today and pay later (e.g. mortgages, credit)."},
+  {q:"Faster Payments was introduced in which year?",
+   opts:["2004","2006","2008","2012"],ans:2,
+   exp:"Faster Payments launched in 2008, enabling near-instant transfers (usually seconds, up to 2 hours)."},
+  {q:"Which payment system processes around 6 billion payments per year, making it the UK's highest-volume system?",
+   opts:["Faster Payments","CHAPS","Bacs","Image Clearing System"],ans:2,
+   exp:"Bacs processes ~6 billion payments annually, mainly Direct Debits and Direct Credits (salary payments)."},
+  {q:"CHAPS is operated by which institution?",
+   opts:["FCA","HM Treasury","Bank of England","Nationwide"],ans:2,
+   exp:"CHAPS (Clearing House Automated Payment System) is operated by the Bank of England and is used for high-value, same-day payments."},
+  {q:"A building society differs from a retail bank primarily because it is:",
+   opts:["Regulated by the PRA","Listed on the stock exchange","Mutually owned by its members","Backed by the government"],ans:2,
+   exp:"Building societies are mutual organisations owned by their savers and borrowers (members), not shareholders."},
+  {q:"NS&I (National Savings and Investments) products are unique because they are:",
+   opts:["Only available to over-60s","100% backed by the government","Exempt from AML regulation","Only available online"],ans:1,
+   exp:"NS&I is backed by HM Government, meaning deposits are 100% guaranteed — beyond the standard FSCS £85,000 limit."},
+  {q:"Which of the following is an example of a FinTech challenger bank?",
+   opts:["Nationwide","Lloyds","HSBC","Monzo"],ans:3,
+   exp:"Monzo (along with Revolut and Starling) is a digital-first FinTech challenger bank offering app-based banking with lower costs and innovative features."},
+  {q:"How long does Bacs typically take to clear a payment?",
+   opts:["Instantly","Same day","3 working days","6 working days"],ans:2,
+   exp:"Bacs takes 3 working days to clear — day 1: submission, day 2: processing, day 3: credit to recipient."},
+  {q:"Which of the following best describes a standing order?",
+   opts:["A variable payment authorised by the payee","A fixed regular payment set up by the customer","A payment that can vary and is protected by a guarantee","A same-day high-value transfer"],ans:1,
+   exp:"A standing order is a fixed, regular payment instructed by the account holder — the bank sends the same amount each time, unlike a Direct Debit which can vary."}
+];
+
+let cur=0, score=0, answered=false;
+function render(){
+  const q=QS[cur];
+  const letters=['A','B','C','D'];
+  document.getElementById('prog-text').textContent=`Question ${cur+1} of ${QS.length}`;
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  document.getElementById('prog-bar').style.width=`${((cur+1)/QS.length)*100}%`;
+  document.getElementById('quiz-area').innerHTML=`
+    <div class="q-card">
+      <div class="q-num">Question ${cur+1}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${letters[i]}</span>${o}</button>`).join('')}</div>
+      <div class="feedback" id="feedback"></div>
+    </div>`;
+  document.getElementById('btn-next').style.display='none';
+  answered=false;
+}
+function pick(i){
+  if(answered)return;
+  answered=true;
+  const q=QS[cur];
+  const fb=document.getElementById('feedback');
+  document.querySelectorAll('.option').forEach(b=>b.disabled=true);
+  if(i===q.ans){score++;document.getElementById(`opt${i}`).className='option correct';fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;}
+  else{document.getElementById(`opt${i}`).className='option wrong';document.getElementById(`opt${q.ans}`).className='option correct';fb.className='feedback show wrong';fb.textContent='✗ '+q.exp;}
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  document.getElementById('btn-next').style.display='block';
+  document.getElementById('btn-next').textContent=cur<QS.length-1?'Next →':'See Results';
+}
+function nextQ(){
+  cur++;
+  if(cur>=QS.length){showResult();return;}
+  render();
+}
+function showResult(){
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('btn-next').style.display='none';
+  document.querySelector('.progress-label').style.display='none';
+  document.querySelector('.progress-bar-wrap').style.display='none';
+  const pct=Math.round((score/QS.length)*100);
+  const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';
+  const r=document.getElementById('result');
+  r.style.display='block';
+  r.innerHTML=`<div class="result-score">${score}/${QS.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div>
+    <div class="result-actions">
+      <a class="btn-retry" href="topic1.html">↺ Retry</a>
+      <a class="btn-hub" href="../index.html">← Back to Hub</a>
+    </div>`;
+}
+function toggleTheme(){const c=document.documentElement.getAttribute('data-theme')||'dark';const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.querySelector('.theme-btn').textContent=n==='dark'?'☀️':'🌙';}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 7 Quiz – Providers of Financial Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#09090f;--surface:#111118;--card:#16161e;--border:#2a2a38;--border-hi:#3d3d52;--text:#f0efff;--muted:#8b8aab;--dim:#55546e;--gold:#e8b84b;--gold-bg:rgba(232,184,75,0.10);--accent:#fbbf24;--accent-bg:rgba(251,191,36,0.12);--correct:#34d399;--correct-bg:rgba(52,211,153,0.12);--wrong:#f87171;--wrong-bg:rgba(248,113,113,0.12);}
+[data-theme="light"]{--bg:#f5f4f0;--surface:#eeede8;--card:#fff;--border:#dddbd4;--border-hi:#c8c5bc;--text:#1a1814;--muted:#706c60;--dim:#a09c90;--gold:#b8861a;--gold-bg:rgba(184,134,26,0.08);--accent:#d97706;--accent-bg:rgba(217,119,6,0.10);--correct:#059669;--correct-bg:rgba(5,150,105,0.10);--wrong:#dc2626;--wrong-bg:rgba(220,38,38,0.10);}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(9,9,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:52px}
+[data-theme="light"] .topbar{background:rgba(245,244,240,0.88)}
+.topbar-brand{font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;display:flex;align-items:center;gap:10px}
+.topbar-brand span{font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:2px 8px}
+.back-link{font-size:0.78rem;font-weight:600;color:var(--muted);text-decoration:none}
+.back-link:hover{color:var(--text)}
+.theme-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.container{max-width:680px;margin:0 auto;padding:48px 20px 80px}
+.quiz-header{text-align:center;margin-bottom:40px}
+.quiz-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.quiz-title{font-size:1.9rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px}
+.quiz-sub{color:var(--muted);font-size:0.88rem}
+.progress-bar-wrap{background:var(--surface);border-radius:99px;height:6px;margin-bottom:32px;overflow:hidden}
+.progress-bar{height:100%;background:var(--accent);border-radius:99px;transition:width 0.4s ease}
+.progress-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--dim);margin-bottom:8px}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 28px 24px;margin-bottom:20px}
+.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.q-text{font-size:1.05rem;font-weight:600;line-height:1.45;margin-bottom:22px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:0.9rem;font-weight:500;cursor:pointer;text-align:left;color:var(--text);transition:border-color 0.15s,background 0.15s;display:flex;align-items:center;gap:12px}
+.option:hover:not(:disabled){border-color:var(--border-hi);background:var(--card)}
+.option.correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.option.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.option:disabled{cursor:default}
+.opt-letter{width:24px;height:24px;border-radius:6px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0}
+.option.correct .opt-letter{background:var(--correct);border-color:var(--correct);color:#fff}
+.option.wrong .opt-letter{background:var(--wrong);border-color:var(--wrong);color:#fff}
+.feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:0.85rem;font-weight:500;display:none}
+.feedback.show{display:block}
+.feedback.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
+.feedback.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.actions{display:flex;justify-content:flex-end;margin-top:20px}
+.btn-next{background:var(--accent);color:#000;border:none;border-radius:10px;padding:11px 28px;font-size:0.88rem;font-weight:700;cursor:pointer;display:none}
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px 28px;text-align:center;display:none}
+.result-score{font-size:3.5rem;font-weight:800;letter-spacing:-0.04em;color:var(--accent);line-height:1}
+.result-out{font-size:1rem;color:var(--muted);margin:6px 0 4px}
+.result-msg{font-size:1.05rem;font-weight:600;margin-bottom:28px}
+.result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-hub{background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-hub:hover{border-color:var(--border-hi);color:var(--text)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-brand"><span>Topic 7</span>Providers of Financial Services</div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a class="back-link" href="../index.html">← Hub</a>
+    <button class="theme-btn" onclick="toggleTheme()">☀️</button>
+  </div>
+</div>
+<div class="container">
+  <div class="quiz-header">
+    <div class="quiz-eyebrow">Unit 1 · Topic 7</div>
+    <h1 class="quiz-title">Providers of Financial Services</h1>
+    <p class="quiz-sub">10 questions · Select the best answer for each</p>
+  </div>
+  <div class="progress-label"><span id="prog-text">Question 1 of 10</span><span id="prog-score">Score: 0</span></div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:10%"></div></div>
+  <div id="quiz-area"></div>
+  <div class="actions"><button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button></div>
+  <div class="result-card" id="result"></div>
+</div>
+<script>
+const QS=[
+  {q:"Building societies differ from retail banks primarily because they are:",opts:["Listed on the London Stock Exchange","Owned by shareholders","Mutually owned by their members","Regulated by the FCA only"],ans:2,exp:"Building societies are mutual organisations — they are owned by their members (savers and borrowers), not external shareholders. This means profits can be returned to members rather than paid as dividends."},
+  {q:"What is 'demutualisation'?",opts:["A building society merging with another building society","A building society converting to a bank (PLC)","A bank converting into a credit union","The process of government taking over a bank"],ans:1,exp:"Demutualisation is when a mutual organisation (like a building society) converts into a public limited company (PLC/bank), issuing shares to existing members. Examples include Halifax and Abbey National."},
+  {q:"Which organisation represents credit unions in the UK?",opts:["FCA","FSCS","ABCUL","NS&I"],ans:2,exp:"ABCUL (Association of British Credit Unions Limited) is the main trade association representing credit unions in England, Scotland and Wales."},
+  {q:"The UK's largest building society by assets is:",opts:["Yorkshire Building Society","Coventry Building Society","West Bromwich Building Society","Nationwide Building Society"],ans:3,exp:"Nationwide is the world's largest building society and the UK's second-largest mortgage lender after HSBC."},
+  {q:"NS&I (National Savings and Investments) is unique because:",opts:["It offers the highest interest rates","It is regulated by the FCA like other banks","Deposits are 100% backed by HM Government","It only offers ISA products"],ans:2,exp:"NS&I is backed by HM Government, so deposits are 100% guaranteed — unlike bank deposits which are only protected to £85,000 through FSCS."},
+  {q:"Premium Bond prizes are:",opts:["Subject to income tax","Subject to capital gains tax","Completely tax-free","Taxed at 10% savings rate"],ans:2,exp:"Premium Bond prizes are completely tax-free and do not count towards the Personal Savings Allowance."},
+  {q:"The Post Office provides financial services through its partnership with:",opts:["Lloyds Banking Group","Barclays Bank","Bank of Ireland UK","The Co-operative Bank"],ans:2,exp:"The Post Office acts as an agent for Bank of Ireland UK, offering savings accounts, credit cards, insurance and travel money through its branch network."},
+  {q:"The Current Account Switch Service (CASS) guarantees switching a bank account within:",opts:["3 working days","7 working days","14 working days","28 working days"],ans:1,exp:"CASS guarantees the full switch — including transferring all payments in and out — within 7 working days. If anything goes wrong, the customer is compensated."},
+  {q:"Credit union members must share a 'common bond'. This means:",opts:["They must all earn the same salary","They share a connection such as an employer, profession, or community","They must be members of the same political party","They must live within 1 mile of the credit union"],ans:1,exp:"To join a credit union, members must share a common bond — this could be working for the same employer, living in the same area, belonging to the same trade union, or sharing a professional connection."},
+  {q:"The interest rate cap on credit union loans in the UK is:",opts:["1% per month (12.7% APR)","2% per month (26.8% APR)","3% per month (42.6% APR)","5% per month (79.6% APR)"],ans:2,exp:"Credit unions in Great Britain are capped at charging 3% per month (42.6% APR) on loans. This still makes them much cheaper than payday lenders but they are not-for-profit."}
+];
+let cur=0,score=0,answered=false;
+function render(){const q=QS[cur];const L=['A','B','C','D'];document.getElementById('prog-text').textContent=`Question ${cur+1} of ${QS.length}`;document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('prog-bar').style.width=`${((cur+1)/QS.length)*100}%`;document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num">Question ${cur+1}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${L[i]}</span>${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`;document.getElementById('btn-next').style.display='none';answered=false;}
+function pick(i){if(answered)return;answered=true;const q=QS[cur];const fb=document.getElementById('feedback');document.querySelectorAll('.option').forEach(b=>b.disabled=true);if(i===q.ans){score++;document.getElementById(`opt${i}`).className='option correct';fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;}else{document.getElementById(`opt${i}`).className='option wrong';document.getElementById(`opt${q.ans}`).className='option correct';fb.className='feedback show wrong';fb.textContent='✗ '+q.exp;}document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('btn-next').style.display='block';document.getElementById('btn-next').textContent=cur<QS.length-1?'Next →':'See Results';}
+function nextQ(){cur++;if(cur>=QS.length){showResult();return;}render();}
+function showResult(){document.getElementById('quiz-area').style.display='none';document.getElementById('btn-next').style.display='none';document.querySelector('.progress-label').style.display='none';document.querySelector('.progress-bar-wrap').style.display='none';const pct=Math.round((score/QS.length)*100);const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';const r=document.getElementById('result');r.style.display='block';r.innerHTML=`<div class="result-score">${score}/${QS.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div><div class="result-actions"><a class="btn-retry" href="topic7.html">↺ Retry</a><a class="btn-hub" href="../index.html">← Back to Hub</a></div>`;}
+function toggleTheme(){const c=document.documentElement.getAttribute('data-theme')||'dark';const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.querySelector('.theme-btn').textContent=n==='dark'?'☀️':'🌙';}
+render();
+</script>
+</body>
+</html>
