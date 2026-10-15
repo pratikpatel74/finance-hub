@@ -17,6 +17,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .back-link{font-size:0.78rem;font-weight:600;color:var(--muted);text-decoration:none}
 .back-link:hover{color:var(--text)}
 .theme-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.timer-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0 12px;height:34px;cursor:pointer;font-size:0.72rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.timer-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
 .container{max-width:680px;margin:0 auto;padding:48px 20px 80px}
 .quiz-header{text-align:center;margin-bottom:40px}
 .quiz-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
@@ -26,7 +28,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .progress-bar{height:100%;background:var(--accent);border-radius:99px;transition:width 0.4s ease}
 .progress-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--dim);margin-bottom:8px}
 .q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 28px 24px;margin-bottom:20px}
-.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.q-timer{font-size:0.8rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.q-timer.warn{color:var(--wrong)}
 .q-text{font-size:1.05rem;font-weight:600;line-height:1.45;margin-bottom:22px}
 .options{display:flex;flex-direction:column;gap:10px}
 .option{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:0.9rem;font-weight:500;cursor:pointer;text-align:left;color:var(--text);transition:border-color 0.15s,background 0.15s;display:flex;align-items:center;gap:12px}
@@ -41,6 +45,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .feedback.show{display:block}
 .feedback.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
 .feedback.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.key-hint{font-size:0.7rem;color:var(--dim);text-align:right;margin-top:8px}
 .actions{display:flex;justify-content:flex-end;margin-top:20px}
 .btn-next{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:0.88rem;font-weight:700;cursor:pointer;display:none}
 .result-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px 28px;text-align:center;display:none}
@@ -48,7 +53,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .result-out{font-size:1rem;color:var(--muted);margin:6px 0 4px}
 .result-msg{font-size:1.05rem;font-weight:600;margin-bottom:28px}
 .result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-missed{background:rgba(248,113,113,0.12);color:#f87171;border:1px solid #f87171;border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
 .btn-hub{background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .btn-hub:hover{border-color:var(--border-hi);color:var(--text)}
 </style>
@@ -56,7 +62,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <body>
 <div class="topbar">
   <div class="topbar-brand"><span>Topic 8</span>Consumer Protection</div>
-  <div style="display:flex;align-items:center;gap:12px">
+  <div style="display:flex;align-items:center;gap:8px">
+    <button class="timer-btn" id="timer-toggle" onclick="toggleTimer()">⏱ Timer: Off</button>
     <a class="back-link" href="../index.html">← Hub</a>
     <button class="theme-btn" onclick="toggleTheme()">☀️</button>
   </div>
@@ -65,34 +72,121 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <div class="quiz-header">
     <div class="quiz-eyebrow">Unit 1 · Topic 8</div>
     <h1 class="quiz-title">Consumer Protection</h1>
-    <p class="quiz-sub">10 questions · Select the best answer for each</p>
+    <p class="quiz-sub">10 questions drawn from a pool of 22 · Press 1–4 to answer, Enter for next</p>
   </div>
   <div class="progress-label"><span id="prog-text">Question 1 of 10</span><span id="prog-score">Score: 0</span></div>
   <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:10%"></div></div>
   <div id="quiz-area"></div>
+  <div class="key-hint">Keyboard: 1–4 to answer · Enter or Space to advance</div>
   <div class="actions"><button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button></div>
   <div class="result-card" id="result"></div>
 </div>
 <script>
-const QS=[
-  {q:"The Financial Services Compensation Scheme (FSCS) protects eligible deposits up to:",opts:["£50,000 per person per bank","£75,000 per person per bank","£85,000 per person per authorised institution","£100,000 per person per bank"],ans:2,exp:"The FSCS protects up to £85,000 per person per authorised institution for eligible deposits. If a firm fails, the FSCS pays out automatically — savers do not need to claim."},
-  {q:"The Financial Conduct Authority (FCA) is primarily responsible for:",opts:["Setting the Bank of England base rate","Prudential regulation of large banks and insurers","Conduct regulation — ensuring firms treat customers fairly","Issuing government gilts and bonds"],ans:2,exp:"The FCA regulates the conduct of financial services firms — ensuring markets work well and consumers get fair treatment. It can fine firms, withdraw authorisations, and ban individuals."},
-  {q:"The Prudential Regulation Authority (PRA) is a subsidiary of:",opts:["HM Treasury","The FCA","The Bank of England","The Competition and Markets Authority"],ans:2,exp:"The PRA is part of the Bank of England. It is responsible for the prudential (financial soundness) regulation of banks, building societies, credit unions, insurers, and major investment firms."},
-  {q:"The Financial Ombudsman Service (FOS) can award compensation of up to:",opts:["£85,000","£170,000","£430,000","£1,000,000"],ans:2,exp:"The FOS can award up to £430,000 for complaints about acts or omissions by firms on or after 1 April 2019. The FOS is free to consumers and its decisions are binding on firms (but not consumers)."},
-  {q:"What is 'ring-fencing' in banking?",opts:["The FCA banning a firm from operating","Separating retail banking from investment banking activities","A rule requiring banks to keep 10% of deposits as reserves","Insurance against bank losses"],ans:1,exp:"Ring-fencing (introduced in 2019 for large UK banks) separates everyday retail banking — current accounts, mortgages, savings — from riskier investment banking activities, protecting ordinary customers if the investment arm fails."},
-  {q:"Which body handles complaints that cannot be resolved directly with a financial firm?",opts:["The FCA","The PRA","The Financial Ombudsman Service","The Competition and Markets Authority"],ans:2,exp:"The Financial Ombudsman Service (FOS) is the independent body for resolving disputes between consumers and financial firms. Consumers must complain to the firm first; if unresolved after 8 weeks they can refer to the FOS."},
-  {q:"Under FCA rules, firms must treat customers fairly under the principle known as:",opts:["Know Your Customer (KYC)","Consumer Duty","Anti-Money Laundering (AML)","Basel III"],ans:1,exp:"The FCA's Consumer Duty (effective July 2023) sets a higher standard — firms must deliver good outcomes for retail customers across four areas: products and services, price and value, consumer understanding, and consumer support."},
-  {q:"The Competition and Markets Authority (CMA) can investigate:",opts:["Individual financial adviser misconduct","Mergers that could reduce competition","Money laundering offences","PPI mis-selling claims"],ans:1,exp:"The CMA is the UK's primary competition regulator. It investigates mergers, markets, and anti-competitive behaviour to ensure consumers benefit from fair competition. It is separate from the FCA."},
-  {q:"If a bank is authorised by the PRA and regulated by the FCA, which body should a customer complain to about a mis-sold mortgage?",opts:["The PRA","The Bank of England","The FCA directly","The Financial Ombudsman Service (after complaining to the bank first)"],ans:3,exp:"For individual complaints, customers must first complain to the firm. If unresolved after 8 weeks (or if a final response is received), the matter can be referred to the FOS — not the FCA. The FCA does not handle individual complaints."},
-  {q:"Which of the following best describes a 'voluntary code of conduct' in financial services?",opts:["A legally binding rule enforced by the FCA","An industry-agreed standard that firms choose to follow, not enforced by law","A regulation passed by Parliament","A code that only applies to credit unions"],ans:1,exp:"Voluntary codes are industry-agreed best-practice standards that firms opt into. They are not legally binding but firms that sign up are expected to comply. Examples include the Lending Standards Board codes. They supplement (not replace) FCA regulation."}
+const TOPIC_ID='topic8';const DRAW=10;
+const POOL=[
+  {q:"The Financial Services Compensation Scheme (FSCS) protects eligible deposits up to:",opts:["£50,000 per person per bank","£75,000 per person per bank","£85,000 per person per authorised institution","£100,000 per person per bank"],ans:2,exp:"The FSCS protects up to £85,000 per person per authorised institution for eligible deposits. If a firm fails, the FSCS pays out automatically — savers do not need to claim. Joint accounts are covered up to £170,000 (£85,000 per person)."},
+  {q:"The Financial Conduct Authority (FCA) is primarily responsible for:",opts:["Setting the Bank of England base rate","Prudential regulation of large banks and insurers","Conduct regulation — ensuring firms treat customers fairly","Issuing government gilts and bonds"],ans:2,exp:"The FCA regulates the conduct of financial services firms — ensuring markets work well and consumers get fair treatment. It can fine firms, withdraw authorisations, and ban individuals. It is funded by fees from the firms it regulates, not by the government."},
+  {q:"The Prudential Regulation Authority (PRA) is a subsidiary of:",opts:["HM Treasury","The FCA","The Bank of England","The Competition and Markets Authority"],ans:2,exp:"The PRA is part of the Bank of England. It is responsible for the prudential (financial soundness) regulation of banks, building societies, credit unions, insurers, and major investment firms — ensuring they have adequate capital and liquidity."},
+  {q:"The Financial Ombudsman Service (FOS) can award compensation of up to:",opts:["£85,000","£170,000","£430,000","£1,000,000"],ans:2,exp:"The FOS can award up to £430,000 for complaints about acts or omissions by firms on or after 1 April 2019. The FOS is free to consumers and its decisions are binding on firms (but not consumers, who can still go to court). Consumers must first complain to the firm."},
+  {q:"What is 'ring-fencing' in banking?",opts:["The FCA banning a firm from operating","Separating retail banking from investment banking activities","A rule requiring banks to keep 10% of deposits as reserves","Insurance against bank losses"],ans:1,exp:"Ring-fencing (introduced in 2019 for large UK banks with core deposits over £25bn) separates everyday retail banking — current accounts, mortgages, savings — from riskier investment banking activities, protecting ordinary customers if the investment arm fails."},
+  {q:"Which body handles individual complaints that cannot be resolved directly with a financial firm?",opts:["The FCA","The PRA","The Financial Ombudsman Service","The Competition and Markets Authority"],ans:2,exp:"The Financial Ombudsman Service (FOS) is the independent body for resolving disputes between consumers and financial firms. Consumers must complain to the firm first; if unresolved after 8 weeks (or if they receive a final response), they can refer to the FOS. The FCA does NOT handle individual complaints."},
+  {q:"Under FCA rules, firms must treat customers fairly under the principle known as:",opts:["Know Your Customer (KYC)","Consumer Duty","Anti-Money Laundering (AML)","Basel III"],ans:1,exp:"The FCA's Consumer Duty (effective July 2023) sets a higher standard — firms must deliver good outcomes for retail customers across four areas: products and services, price and value, consumer understanding, and consumer support. It replaced and upgraded the earlier Treating Customers Fairly (TCF) principle."},
+  {q:"The Competition and Markets Authority (CMA) can investigate:",opts:["Individual financial adviser misconduct","Mergers that could reduce competition","Money laundering offences","PPI mis-selling claims"],ans:1,exp:"The CMA is the UK's primary competition regulator. It investigates mergers, markets, and anti-competitive behaviour to ensure consumers benefit from fair competition. It is separate from the FCA and does not handle individual conduct complaints. Its 2016 banking investigation led to Open Banking."},
+  {q:"If a bank is authorised by the PRA and regulated by the FCA, which body should a customer complain to about a mis-sold mortgage?",opts:["The PRA","The Bank of England","The FCA directly","The Financial Ombudsman Service (after complaining to the bank first)"],ans:3,exp:"For individual complaints, customers must first complain to the firm. If unresolved after 8 weeks (or on receipt of a final response), the matter can be referred to the FOS. The FCA does not handle individual complaints — it handles systemic issues and firm regulation."},
+  {q:"Which of the following best describes a 'voluntary code of conduct' in financial services?",opts:["A legally binding rule enforced by the FCA","An industry-agreed standard that firms choose to follow, not enforced by law","A regulation passed by Parliament","A code that only applies to credit unions"],ans:1,exp:"Voluntary codes are industry-agreed best-practice standards that firms opt into. They are not legally binding but firms that sign up are expected to comply. Examples include the Lending Standards Board codes. They supplement (not replace) FCA regulation and can be enforced through reputational pressure and industry oversight."},
+  {q:"The FSCS protection limit for investment claims (e.g., Stocks and Shares ISAs) is:",opts:["£50,000","£75,000","£85,000","£170,000"],ans:2,exp:"The FSCS protects eligible investment claims up to £85,000 per person per firm — the same limit as deposits. This covers scenarios where an investment firm fails and cannot return client assets. It does NOT cover investment losses due to market movements."},
+  {q:"The Financial Policy Committee (FPC) is responsible for:",opts:["Setting the Bank of England base rate","Macroprudential regulation — identifying and reducing systemic risks to the UK financial system","Regulating individual financial advisers","Overseeing the Pensions Regulator"],ans:1,exp:"The FPC (part of the Bank of England) is responsible for macroprudential policy — looking at the financial system as a whole rather than individual firms. It identifies risks to financial stability (such as excessive credit growth or housing market bubbles) and can direct the PRA and FCA to take action."},
+  {q:"The Consumer Duty's four outcome areas are:",opts:["Pricing, service, complaints, and staff training","Products and services, price and value, consumer understanding, and consumer support","Know Your Customer, AML, suitability, and disclosure","Authorisation, supervision, enforcement, and redress"],ans:1,exp:"The FCA's Consumer Duty (July 2023) requires firms to deliver good outcomes in four areas: (1) Products and Services — fit for purpose; (2) Price and Value — fair value for money; (3) Consumer Understanding — clear communications; (4) Consumer Support — helpful and accessible. Note: consumer credit limits is NOT one of the four outcomes."},
+  {q:"A firm that is 'dual-regulated' is supervised by:",opts:["The FCA and the Bank of England's monetary policy committee","Both the PRA and the FCA","The FCA and HM Treasury","The CMA and the FCA"],ans:1,exp:"Dual-regulated firms (large banks, building societies, credit unions, insurers, and major investment firms) are regulated by both the PRA (financial soundness) and the FCA (conduct). Smaller firms that do not need prudential regulation are regulated by the FCA only ('solo-regulated')."},
+  {q:"After referring a complaint to the Financial Ombudsman Service, how long does a consumer have to accept the FOS's final decision?",opts:["14 days","28 days","6 months","12 months"],ans:2,exp:"A consumer has 6 months from the date of the FOS's final decision to accept or reject it. If accepted, it is legally binding on the firm. If rejected by the consumer, they can still take the firm to court (but cannot go back to the FOS on the same complaint)."},
+  {q:"The Information Commissioner's Office (ICO) enforces:",opts:["FCA conduct rules for financial firms","UK GDPR and the Data Protection Act 2018","AML regulations and suspicious activity reports","The Consumer Duty outcomes"],ans:1,exp:"The ICO is the UK's independent authority for data protection and privacy. It enforces UK GDPR and the Data Protection Act 2018, which govern how organisations handle personal data. Financial firms must comply with both FCA rules AND data protection law. The ICO can fine firms up to £17.5m or 4% of global turnover."},
+  {q:"Anti-Money Laundering (AML) obligations require financial firms to:",opts:["Report all transactions over £1,000 to HMRC","Conduct Know Your Customer (KYC) checks and submit Suspicious Activity Reports (SARs) to the National Crime Agency","Refuse all cash transactions","Verify customer identities only for mortgages"],ans:1,exp:"AML regulations require firms to carry out KYC checks (verifying customer identity and understanding the nature of their business), monitor transactions for suspicious activity, and submit SARs to the National Crime Agency (NCA) via the Suspicious Activity Reports regime. Failure to do so is a criminal offence."},
+  {q:"The FSCS protection for general insurance policies (e.g., home insurance) in the event of a firm failure is:",opts:["100% of the claim, no limit","90% of the claim, no upper limit (compulsory insurance: 100%)","85% of the first £85,000","50% of the claim up to a maximum of £50,000"],ans:1,exp:"For general insurance: compulsory policies (e.g., employers' liability, motor) are covered 100%. For non-compulsory policies (e.g., home, travel), cover is 90% of the claim with no upper limit. This differs from the deposit and investment £85,000 cap."},
+  {q:"Which of the following best describes a 'vulnerable customer' under FCA guidance?",opts:["Any customer who has made a complaint","A customer who is especially susceptible to harm due to personal circumstances such as low financial resilience, life events, or mental capacity issues","Any customer aged over 70","A customer who has missed two or more loan repayments"],ans:1,exp:"The FCA's guidance on vulnerable customers (FG21/1) defines a vulnerable customer as someone who, due to their personal circumstances, is especially susceptible to harm — particularly when a firm is not acting with appropriate levels of care. Drivers include: health, life events (bereavement, relationship breakdown), resilience, and capability (low financial literacy)."},
+  {q:"The 'Treating Customers Fairly' (TCF) principle was replaced in July 2023 by:",opts:["The Financial Services Act 2012","Consumer Duty","The Banking Act 2009","Know Your Customer requirements"],ans:1,exp:"The FCA's Consumer Duty (effective 31 July 2023 for new products; 31 July 2024 for closed products) superseded and upgraded the earlier TCF principle. Consumer Duty sets a higher, more outcome-focused standard for how firms must treat retail customers, with clearer expectations and stronger enforcement."},
+  {q:"The CMA's 2016 retail banking market investigation directly led to:",opts:["The introduction of ring-fencing in 2019","The creation of the FCA in 2013","Open Banking — mandating the nine largest banks to share data via APIs from January 2018","The FSCS deposit limit rising from £75,000 to £85,000"],ans:2,exp:"The CMA's 2016 retail banking market investigation found that established banks faced insufficient competitive pressure. Its remedy required the nine largest UK banks to implement Open Banking — sharing standardised data via APIs with authorised third parties — from January 2018. This was implemented under PSD2."},
+  {q:"A consumer who has been mis-sold a financial product by a firm that has since become insolvent should claim from:",opts:["The Financial Ombudsman Service","HM Treasury","The Financial Services Compensation Scheme (FSCS)","The Competition and Markets Authority"],ans:2,exp:"If the firm that mis-sold a product has failed (become insolvent and unable to pay), the FSCS is the consumer's route to compensation. The FOS handles complaints against solvent firms only. The FSCS steps in when the firm itself cannot pay. Both the FCA and FSCS have time limits on mis-selling claims."}
 ];
-let cur=0,score=0,answered=false;
-function render(){const q=QS[cur];const L=['A','B','C','D'];document.getElementById('prog-text').textContent=`Question ${cur+1} of ${QS.length}`;document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('prog-bar').style.width=`${((cur+1)/QS.length)*100}%`;document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num">Question ${cur+1}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${L[i]}</span>${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`;document.getElementById('btn-next').style.display='none';answered=false;}
-function pick(i){if(answered)return;answered=true;const q=QS[cur];const fb=document.getElementById('feedback');document.querySelectorAll('.option').forEach(b=>b.disabled=true);if(i===q.ans){score++;document.getElementById(`opt${i}`).className='option correct';fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;}else{document.getElementById(`opt${i}`).className='option wrong';document.getElementById(`opt${q.ans}`).className='option correct';fb.className='feedback show wrong';fb.textContent='✗ '+q.exp;}document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('btn-next').style.display='block';document.getElementById('btn-next').textContent=cur<QS.length-1?'Next →':'See Results';}
-function nextQ(){cur++;if(cur>=QS.length){showResult();return;}render();}
-function showResult(){document.getElementById('quiz-area').style.display='none';document.getElementById('btn-next').style.display='none';document.querySelector('.progress-label').style.display='none';document.querySelector('.progress-bar-wrap').style.display='none';const pct=Math.round((score/QS.length)*100);const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';const r=document.getElementById('result');r.style.display='block';r.innerHTML=`<div class="result-score">${score}/${QS.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div><div class="result-actions"><a class="btn-retry" href="topic8.html">↺ Retry</a><a class="btn-hub" href="../index.html">← Back to Hub</a></div>`;}
+POOL.forEach((q,i)=>q._id=i);
+let sessionQ=[],cur=0,score=0,answered=false,finished=false;
+let timerOn=false,timerSecs=60,timerInterval=null;
+const retryMissed=location.search.includes('retry=missed');
+try{timerOn=localStorage.getItem(TOPIC_ID+'_timer')==='true';}catch(e){}
+function updateTimerBtn(){const b=document.getElementById('timer-toggle');if(!b)return;b.textContent='⏱ Timer: '+(timerOn?'On':'Off');b.className='timer-btn'+(timerOn?' active':'');}
+function initSession(){
+  let pool;
+  if(retryMissed){
+    try{const m=JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]');pool=POOL.filter(q=>m.includes(q._id));}catch(e){pool=[];}
+    if(!pool.length)pool=[...POOL];
+  }else{
+    pool=[...POOL];
+    try{localStorage.removeItem(TOPIC_ID+'_missed');}catch(e){}
+  }
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  sessionQ=pool.slice(0,Math.min(DRAW,pool.length));
+  cur=0;score=0;answered=false;finished=false;
+  updateTimerBtn();render();
+}
+function render(){
+  const q=sessionQ[cur];const L=['A','B','C','D'];
+  document.getElementById('prog-text').textContent=`Question ${cur+1} of ${sessionQ.length}`;
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  document.getElementById('prog-bar').style.width=`${((cur+1)/sessionQ.length)*100}%`;
+  document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num"><span>Question ${cur+1}</span>${timerOn?`<span class="q-timer" id="q-timer">${timerSecs}s</span>`:''}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${L[i]}</span>${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`;
+  document.getElementById('btn-next').style.display='none';
+  answered=false;
+  if(timerOn)startTimer();
+}
+function startTimer(){
+  clearInterval(timerInterval);timerSecs=60;
+  timerInterval=setInterval(()=>{
+    timerSecs--;
+    const el=document.getElementById('q-timer');
+    if(el){el.textContent=timerSecs+'s';if(timerSecs<=10)el.classList.add('warn');}
+    if(timerSecs<=0){clearInterval(timerInterval);pick(-1);}
+  },1000);
+}
+function pick(i){
+  if(answered)return;answered=true;clearInterval(timerInterval);
+  const q=sessionQ[cur];const fb=document.getElementById('feedback');
+  document.querySelectorAll('.option').forEach(b=>b.disabled=true);
+  if(i===q.ans){
+    score++;
+    if(i>=0)document.getElementById(`opt${i}`).className='option correct';
+    fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;
+  }else{
+    if(i>=0)document.getElementById(`opt${i}`).className='option wrong';
+    document.getElementById(`opt${q.ans}`).className='option correct';
+    fb.className='feedback show wrong';fb.textContent=(i===-1?'⏱ Time\'s up! ':'✗ ')+q.exp;
+    try{const m=JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]');if(!m.includes(q._id))m.push(q._id);localStorage.setItem(TOPIC_ID+'_missed',JSON.stringify(m));}catch(e){}
+  }
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  const nb=document.getElementById('btn-next');nb.style.display='block';nb.textContent=cur<sessionQ.length-1?'Next →':'See Results';
+}
+function nextQ(){cur++;if(cur>=sessionQ.length){showResult();return;}render();}
+function showResult(){
+  finished=true;clearInterval(timerInterval);
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('btn-next').style.display='none';
+  document.querySelector('.progress-label').style.display='none';
+  document.querySelector('.progress-bar-wrap').style.display='none';
+  document.querySelector('.key-hint').style.display='none';
+  const pct=Math.round((score/sessionQ.length)*100);
+  const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';
+  try{localStorage.setItem(TOPIC_ID+'_last',JSON.stringify({score,total:sessionQ.length,pct,date:new Date().toISOString()}));}catch(e){}
+  let missedCount=0;try{missedCount=(JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]')).length;}catch(e){}
+  const base=location.href.split('?')[0];
+  const r=document.getElementById('result');r.style.display='block';
+  r.innerHTML=`<div class="result-score">${score}/${sessionQ.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div><div class="result-actions"><a class="btn-retry" href="${base}">↺ New Quiz</a>${missedCount>0?`<a class="btn-missed" href="${base}?retry=missed">↯ Retry ${missedCount} missed</a>`:''}<a class="btn-hub" href="../index.html">← Hub</a></div>`;
+}
+function toggleTimer(){timerOn=!timerOn;try{localStorage.setItem(TOPIC_ID+'_timer',timerOn);}catch(e){}updateTimerBtn();}
 function toggleTheme(){const c=document.documentElement.getAttribute('data-theme')||'dark';const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.querySelector('.theme-btn').textContent=n==='dark'?'☀️':'🌙';}
-render();
+document.addEventListener('keydown',e=>{
+  if(finished)return;
+  if(!answered){if(e.key==='1')pick(0);else if(e.key==='2')pick(1);else if(e.key==='3')pick(2);else if(e.key==='4')pick(3);}
+  else if((e.key==='Enter'||e.key===' ')&&document.getElementById('btn-next').style.display!=='none'){e.preventDefault();nextQ();}
+});
+initSession();
 </script>
 </body>
 </html>

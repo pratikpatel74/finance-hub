@@ -14,9 +14,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 [data-theme="light"] .topbar{background:rgba(245,244,240,0.88)}
 .topbar-brand{font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;display:flex;align-items:center;gap:10px}
 .topbar-brand span{font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:2px 8px}
-.back-link{font-size:0.78rem;font-weight:600;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color 0.15s}
+.back-link{font-size:0.78rem;font-weight:600;color:var(--muted);text-decoration:none}
 .back-link:hover{color:var(--text)}
 .theme-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.timer-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0 12px;height:34px;cursor:pointer;font-size:0.72rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.timer-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
 .container{max-width:680px;margin:0 auto;padding:48px 20px 80px}
 .quiz-header{text-align:center;margin-bottom:40px}
 .quiz-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
@@ -26,7 +28,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .progress-bar{height:100%;background:var(--accent);border-radius:99px;transition:width 0.4s ease}
 .progress-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--dim);margin-bottom:8px}
 .q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 28px 24px;margin-bottom:20px}
-.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.q-timer{font-size:0.8rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.q-timer.warn{color:var(--wrong)}
 .q-text{font-size:1.05rem;font-weight:600;line-height:1.45;margin-bottom:22px}
 .options{display:flex;flex-direction:column;gap:10px}
 .option{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:0.9rem;font-weight:500;cursor:pointer;text-align:left;color:var(--text);transition:border-color 0.15s,background 0.15s;display:flex;align-items:center;gap:12px}
@@ -41,15 +45,16 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .feedback.show{display:block}
 .feedback.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
 .feedback.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.key-hint{font-size:0.7rem;color:var(--dim);text-align:right;margin-top:8px}
 .actions{display:flex;justify-content:flex-end;margin-top:20px}
-.btn-next{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:0.88rem;font-weight:700;cursor:pointer;display:none;transition:opacity 0.15s}
-.btn-next:hover{opacity:0.85}
+.btn-next{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:0.88rem;font-weight:700;cursor:pointer;display:none}
 .result-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px 28px;text-align:center;display:none}
 .result-score{font-size:3.5rem;font-weight:800;letter-spacing:-0.04em;color:var(--accent);line-height:1}
 .result-out{font-size:1rem;color:var(--muted);margin:6px 0 4px}
 .result-msg{font-size:1.05rem;font-weight:600;margin-bottom:28px}
 .result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-missed{background:rgba(248,113,113,0.12);color:#f87171;border:1px solid #f87171;border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
 .btn-hub{background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .btn-hub:hover{border-color:var(--border-hi);color:var(--text)}
 </style>
@@ -57,7 +62,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <body>
 <div class="topbar">
   <div class="topbar-brand"><span>Topic 2</span>The Personal Life Cycle</div>
-  <div style="display:flex;align-items:center;gap:12px">
+  <div style="display:flex;align-items:center;gap:8px">
+    <button class="timer-btn" id="timer-toggle" onclick="toggleTimer()">⏱ Timer: Off</button>
     <a class="back-link" href="../index.html">← Hub</a>
     <button class="theme-btn" onclick="toggleTheme()">☀️</button>
   </div>
@@ -66,34 +72,121 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <div class="quiz-header">
     <div class="quiz-eyebrow">Unit 1 · Topic 2</div>
     <h1 class="quiz-title">The Personal Life Cycle</h1>
-    <p class="quiz-sub">10 questions · Select the best answer for each</p>
+    <p class="quiz-sub">10 questions drawn from a pool of 22 · Press 1–4 to answer, Enter for next</p>
   </div>
   <div class="progress-label"><span id="prog-text">Question 1 of 10</span><span id="prog-score">Score: 0</span></div>
   <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:10%"></div></div>
   <div id="quiz-area"></div>
+  <div class="key-hint">Keyboard: 1–4 to answer · Enter or Space to advance</div>
   <div class="actions"><button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button></div>
   <div class="result-card" id="result"></div>
 </div>
 <script>
-const QS=[
-  {q:"What is the annual ISA allowance for the 2024/25 tax year?",opts:["£10,000","£15,000","£20,000","£25,000"],ans:2,exp:"The annual ISA allowance is £20,000 per tax year (2024/25). This can be split across multiple ISA types."},
-  {q:"The Lifetime ISA (LISA) offers a government bonus of:",opts:["10%","20%","25%","50%"],ans:2,exp:"The government adds a 25% bonus on LISA contributions (up to £1,000/year on max £4,000 saved)."},
-  {q:"At what minimum age can a person open a Cash ISA?",opts:["14","16","18","21"],ans:1,exp:"Cash ISAs are available from age 16. Stocks and Shares ISAs require age 18."},
-  {q:"What is the full new State Pension weekly amount for 2024/25?",opts:["£185.15","£203.85","£221.20","£245.00"],ans:2,exp:"The full new State Pension is £221.20 per week in 2024/25, requiring 35 qualifying National Insurance years."},
-  {q:"How many qualifying National Insurance years are needed for the full State Pension?",opts:["20","25","30","35"],ans:3,exp:"35 qualifying NI years are needed for the full new State Pension. Fewer years result in a proportionally reduced amount."},
-  {q:"Under auto-enrolment, what is the minimum total pension contribution (employer + employee)?",opts:["4%","6%","8%","10%"],ans:2,exp:"Minimum total contribution is 8% — at least 3% from the employer and at least 5% from the employee."},
-  {q:"A Defined Benefit (final salary) pension scheme guarantees income based on:",opts:["Market performance and contributions","Salary and years of service","Annuity rates at retirement","Inflation index only"],ans:1,exp:"DB/final salary pensions provide income based on the member's salary and length of service. The employer bears the investment risk."},
-  {q:"What does LTV stand for in mortgage terminology?",opts:["Loan Term Value","Loan-to-Value","Lender Transfer Valuation","Long-Term Variable"],ans:1,exp:"LTV = Loan-to-Value ratio. A lower LTV means less risk for the lender and typically secures a better interest rate for the borrower."},
-  {q:"The Lifetime ISA can only be used penalty-free to buy a first home worth up to:",opts:["£250,000","£350,000","£450,000","£550,000"],ans:2,exp:"LISA funds can be used for a first home purchase of up to £450,000 without the 25% withdrawal penalty."},
-  {q:"What is the Junior ISA annual allowance?",opts:["£4,000","£9,000","£12,000","£20,000"],ans:1,exp:"The Junior ISA allowance is £9,000 per tax year. The funds cannot be accessed until the child turns 18."}
+const TOPIC_ID='topic2';const DRAW=10;
+const POOL=[
+  {q:"The annual ISA allowance for the 2024/25 tax year is:",opts:["£15,000","£20,000","£25,000","£50,000"],ans:1,exp:"The ISA (Individual Savings Account) allowance is £20,000 per tax year. Any combination of Cash ISA, Stocks & Shares ISA, Innovative Finance ISA, and Lifetime ISA (capped at £4,000) can be used, up to the £20,000 total."},
+  {q:"The Lifetime ISA (LISA) government bonus is:",opts:["10% per year up to £500","20% per year up to £1,000","25% per year up to £1,000","50% per year up to £500"],ans:2,exp:"The LISA pays a 25% government bonus on contributions up to £4,000 per year — a maximum bonus of £1,000 per year. It can be used to buy a first home (up to £450,000) or accessed penalty-free from age 60."},
+  {q:"The minimum age to open a Cash ISA in your own name is:",opts:["16","18","21","25"],ans:0,exp:"16-year-olds can open a Cash ISA (from 6 April 2024). The minimum age for Stocks & Shares ISAs and Innovative Finance ISAs is 18. Junior ISAs are available from birth but managed by a parent/guardian until the child turns 18."},
+  {q:"The full new State Pension (2024/25) is approximately:",opts:["£169.50 per week","£185.15 per week","£203.85 per week","£221.20 per week"],ans:3,exp:"The full new State Pension for 2024/25 is £221.20 per week (£11,502.40 per year). To receive the full amount, you need 35 qualifying years of National Insurance contributions or credits."},
+  {q:"How many qualifying National Insurance years are needed for the full new State Pension?",opts:["10","25","30","35"],ans:3,exp:"You need 35 qualifying NI years for the full new State Pension. You need at least 10 years to receive any State Pension. Gaps can be filled by making voluntary Class 3 NI contributions."},
+  {q:"Under auto-enrolment, the minimum total pension contribution is:",opts:["5% (employer 2%, employee 3%)","8% (employer 3%, employee 5%)","10% (employer 5%, employee 5%)","12% (employer 6%, employee 6%)"],ans:1,exp:"Since April 2019, the minimum total auto-enrolment contribution is 8% of qualifying earnings: at least 3% from the employer and the remaining 5% from the employee (including tax relief). Employers can choose to contribute more."},
+  {q:"A defined benefit (DB) pension provides a retirement income based on:",opts:["The value of the investment fund at retirement","A fixed percentage return on contributions","Final salary or career-average salary and years of service","The annuity rate at retirement"],ans:2,exp:"A defined benefit pension guarantees a retirement income based on salary (final or career-average) and length of service. The employer bears the investment risk. DB schemes are sometimes called 'gold-plated' but are now rare in the private sector."},
+  {q:"Loan to Value (LTV) ratio is best defined as:",opts:["Monthly mortgage payment ÷ monthly income × 100","Amount borrowed ÷ property value × 100","Property value ÷ annual income × 100","Deposit ÷ property value × 100"],ans:1,exp:"LTV = (Loan amount ÷ Property value) × 100. A £180,000 mortgage on a £200,000 property = 90% LTV. Lower LTV means less risk to the lender, so lower interest rates are typically offered."},
+  {q:"The maximum property value for a Lifetime ISA to be used for a first home purchase is:",opts:["£250,000","£350,000","£450,000","£600,000"],ans:2,exp:"The LISA can be used for a first home costing up to £450,000. If the property exceeds this limit, the LISA cannot be used and the 25% withdrawal penalty would apply if funds were withdrawn for that purpose."},
+  {q:"The annual Junior ISA (JISA) subscription limit for 2024/25 is:",opts:["£4,000","£6,000","£9,000","£20,000"],ans:2,exp:"The Junior ISA allowance is £9,000 per tax year. Parents/guardians manage the account; funds are locked until the child turns 18. At 18, it automatically rolls into an adult ISA."},
+  {q:"Auto-enrolment applies to eligible workers aged:",opts:["18 to 65","22 to State Pension Age","25 to 60","Any age earning above £10,000"],ans:1,exp:"Auto-enrolment applies to eligible workers aged between 22 and State Pension Age who earn above £10,000 per year. Workers outside this age band or earning threshold can opt in voluntarily, and employers must still contribute if they do."},
+  {q:"The pension Annual Allowance for 2024/25 (the maximum tax-relieved contribution per year) is:",opts:["£40,000","£50,000","£60,000","£100,000"],ans:2,exp:"The Annual Allowance is £60,000 for 2024/25 (raised from £40,000 in April 2023). Contributions above this limit attract a tax charge. High earners may have a reduced 'tapered annual allowance'."},
+  {q:"In a defined contribution (DC) pension, who bears the investment risk?",opts:["The government","The employer","The pension scheme trustees","The individual member"],ans:3,exp:"In a DC pension, the individual bears the investment risk — the retirement pot depends on contributions made, investment returns, and charges. In a defined benefit (DB) pension, the employer bears the risk and guarantees a set income."},
+  {q:"Which LTV bracket typically attracts the lowest mortgage interest rate?",opts:["95% LTV","85% LTV","75% LTV","60% LTV"],ans:3,exp:"The lowest mortgage rates are available at 60% LTV (or lower). At 60% LTV, the lender's risk is very low — even if house prices fall significantly, the loan is well-covered by the property value. Higher LTV = higher rate."},
+  {q:"A tracker mortgage is best described as:",opts:["A fixed rate that tracks inflation","An interest rate linked to the Bank of England base rate plus a set percentage","A mortgage that tracks property values","A variable rate set entirely by the lender"],ans:1,exp:"A tracker mortgage has an interest rate that moves in line with the Bank of England base rate, plus a set margin (e.g., base rate + 1%). If the base rate rises by 0.25%, monthly payments rise automatically. Unlike an SVR, the lender cannot change the margin unilaterally."},
+  {q:"What is the penalty for withdrawing from a Lifetime ISA for a reason other than buying a first home or reaching age 60?",opts:["10% of the amount withdrawn","20% of the amount withdrawn","25% of the amount withdrawn","The entire bonus is lost but no additional penalty"],ans:2,exp:"The LISA withdrawal penalty is 25% of the amount withdrawn. This effectively claws back the government bonus plus some of the saver's own money. For example: save £4,000, receive £1,000 bonus (total £5,000); withdraw £5,000 × 25% = £1,250 penalty, leaving only £3,750."},
+  {q:"The UK government's Help to Buy equity loan scheme (England) closed to new applications in:",opts:["December 2021","March 2023","April 2024","December 2025"],ans:1,exp:"The Help to Buy equity loan scheme in England closed to new applications on 31 October 2022, and all completions had to occur by 31 March 2023. It had provided an interest-free government loan of up to 20% (40% in London) toward new-build homes."},
+  {q:"The current State Pension Age (SPA) for both men and women in the UK is:",opts:["60","65","66","67"],ans:2,exp:"The State Pension Age is currently 66 for both men and women (equalised in 2020). It is legislated to rise to 67 between 2026 and 2028, and further rises to 68 are under review."},
+  {q:"An offset mortgage works by:",opts:["Fixing the interest rate for the life of the mortgage","Linking a savings balance to the mortgage, so interest is only charged on the mortgage minus savings","Allowing the borrower to take payment holidays freely","Offering a below-market rate in exchange for giving the lender a share of any house price gain"],ans:1,exp:"An offset mortgage links a savings or current account to the mortgage. Interest is only charged on the net balance (mortgage outstanding minus savings balance). For example: £200,000 mortgage, £30,000 savings → interest charged on £170,000. Savings earn no interest but effectively save mortgage interest instead."},
+  {q:"Defined contribution pensions are now dominant in which sector?",opts:["Public sector only","The NHS only","The private sector","Both public and private sectors equally"],ans:2,exp:"DC pensions are the norm in the private sector; most private sector employers have closed DB schemes to new members. The public sector (NHS, teachers, civil service) still mainly offers generous DB schemes, which is why these are seen as valuable employment benefits."},
+  {q:"Under auto-enrolment rules, the minimum employer contribution into a qualifying pension scheme is:",opts:["1%","2%","3%","5%"],ans:2,exp:"The minimum employer contribution is 3% of qualifying earnings. The total minimum is 8%, so if the employer contributes just 3%, the employee must contribute at least 5% (including tax relief) to meet the minimum."},
+  {q:"An interest-only mortgage differs from a repayment mortgage in that:",opts:["The interest rate is always fixed","Monthly payments are higher","Only interest is paid each month — the capital is repaid in full at the end of the term","The lender provides a government guarantee"],ans:2,exp:"With an interest-only mortgage, monthly payments cover only the interest — the original loan amount (capital) remains outstanding and must be repaid at the end of the term, typically via a repayment vehicle such as an ISA or investment. Monthly payments are lower but the total cost can be higher."}
 ];
-let cur=0,score=0,answered=false;
-function render(){const q=QS[cur];const L=['A','B','C','D'];document.getElementById('prog-text').textContent=`Question ${cur+1} of ${QS.length}`;document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('prog-bar').style.width=`${((cur+1)/QS.length)*100}%`;document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num">Question ${cur+1}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${L[i]}</span>${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`;document.getElementById('btn-next').style.display='none';answered=false;}
-function pick(i){if(answered)return;answered=true;const q=QS[cur];const fb=document.getElementById('feedback');document.querySelectorAll('.option').forEach(b=>b.disabled=true);if(i===q.ans){score++;document.getElementById(`opt${i}`).className='option correct';fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;}else{document.getElementById(`opt${i}`).className='option wrong';document.getElementById(`opt${q.ans}`).className='option correct';fb.className='feedback show wrong';fb.textContent='✗ '+q.exp;}document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('btn-next').style.display='block';document.getElementById('btn-next').textContent=cur<QS.length-1?'Next →':'See Results';}
-function nextQ(){cur++;if(cur>=QS.length){showResult();return;}render();}
-function showResult(){document.getElementById('quiz-area').style.display='none';document.getElementById('btn-next').style.display='none';document.querySelector('.progress-label').style.display='none';document.querySelector('.progress-bar-wrap').style.display='none';const pct=Math.round((score/QS.length)*100);const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';const r=document.getElementById('result');r.style.display='block';r.innerHTML=`<div class="result-score">${score}/${QS.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div><div class="result-actions"><a class="btn-retry" href="topic2.html">↺ Retry</a><a class="btn-hub" href="../index.html">← Back to Hub</a></div>`;}
+POOL.forEach((q,i)=>q._id=i);
+let sessionQ=[],cur=0,score=0,answered=false,finished=false;
+let timerOn=false,timerSecs=60,timerInterval=null;
+const retryMissed=location.search.includes('retry=missed');
+try{timerOn=localStorage.getItem(TOPIC_ID+'_timer')==='true';}catch(e){}
+function updateTimerBtn(){const b=document.getElementById('timer-toggle');if(!b)return;b.textContent='⏱ Timer: '+(timerOn?'On':'Off');b.className='timer-btn'+(timerOn?' active':'');}
+function initSession(){
+  let pool;
+  if(retryMissed){
+    try{const m=JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]');pool=POOL.filter(q=>m.includes(q._id));}catch(e){pool=[];}
+    if(!pool.length)pool=[...POOL];
+  }else{
+    pool=[...POOL];
+    try{localStorage.removeItem(TOPIC_ID+'_missed');}catch(e){}
+  }
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  sessionQ=pool.slice(0,Math.min(DRAW,pool.length));
+  cur=0;score=0;answered=false;finished=false;
+  updateTimerBtn();render();
+}
+function render(){
+  const q=sessionQ[cur];const L=['A','B','C','D'];
+  document.getElementById('prog-text').textContent=`Question ${cur+1} of ${sessionQ.length}`;
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  document.getElementById('prog-bar').style.width=`${((cur+1)/sessionQ.length)*100}%`;
+  document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num"><span>Question ${cur+1}</span>${timerOn?`<span class="q-timer" id="q-timer">${timerSecs}s</span>`:''}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${L[i]}</span>${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`;
+  document.getElementById('btn-next').style.display='none';
+  answered=false;
+  if(timerOn)startTimer();
+}
+function startTimer(){
+  clearInterval(timerInterval);timerSecs=60;
+  timerInterval=setInterval(()=>{
+    timerSecs--;
+    const el=document.getElementById('q-timer');
+    if(el){el.textContent=timerSecs+'s';if(timerSecs<=10)el.classList.add('warn');}
+    if(timerSecs<=0){clearInterval(timerInterval);pick(-1);}
+  },1000);
+}
+function pick(i){
+  if(answered)return;answered=true;clearInterval(timerInterval);
+  const q=sessionQ[cur];const fb=document.getElementById('feedback');
+  document.querySelectorAll('.option').forEach(b=>b.disabled=true);
+  if(i===q.ans){
+    score++;
+    if(i>=0)document.getElementById(`opt${i}`).className='option correct';
+    fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;
+  }else{
+    if(i>=0)document.getElementById(`opt${i}`).className='option wrong';
+    document.getElementById(`opt${q.ans}`).className='option correct';
+    fb.className='feedback show wrong';fb.textContent=(i===-1?'⏱ Time\'s up! ':'✗ ')+q.exp;
+    try{const m=JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]');if(!m.includes(q._id))m.push(q._id);localStorage.setItem(TOPIC_ID+'_missed',JSON.stringify(m));}catch(e){}
+  }
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  const nb=document.getElementById('btn-next');nb.style.display='block';nb.textContent=cur<sessionQ.length-1?'Next →':'See Results';
+}
+function nextQ(){cur++;if(cur>=sessionQ.length){showResult();return;}render();}
+function showResult(){
+  finished=true;clearInterval(timerInterval);
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('btn-next').style.display='none';
+  document.querySelector('.progress-label').style.display='none';
+  document.querySelector('.progress-bar-wrap').style.display='none';
+  document.querySelector('.key-hint').style.display='none';
+  const pct=Math.round((score/sessionQ.length)*100);
+  const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';
+  try{localStorage.setItem(TOPIC_ID+'_last',JSON.stringify({score,total:sessionQ.length,pct,date:new Date().toISOString()}));}catch(e){}
+  let missedCount=0;try{missedCount=(JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]')).length;}catch(e){}
+  const base=location.href.split('?')[0];
+  const r=document.getElementById('result');r.style.display='block';
+  r.innerHTML=`<div class="result-score">${score}/${sessionQ.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div><div class="result-actions"><a class="btn-retry" href="${base}">↺ New Quiz</a>${missedCount>0?`<a class="btn-missed" href="${base}?retry=missed">↯ Retry ${missedCount} missed</a>`:''}<a class="btn-hub" href="../index.html">← Hub</a></div>`;
+}
+function toggleTimer(){timerOn=!timerOn;try{localStorage.setItem(TOPIC_ID+'_timer',timerOn);}catch(e){}updateTimerBtn();}
 function toggleTheme(){const c=document.documentElement.getAttribute('data-theme')||'dark';const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.querySelector('.theme-btn').textContent=n==='dark'?'☀️':'🌙';}
-render();
+document.addEventListener('keydown',e=>{
+  if(finished)return;
+  if(!answered){if(e.key==='1')pick(0);else if(e.key==='2')pick(1);else if(e.key==='3')pick(2);else if(e.key==='4')pick(3);}
+  else if((e.key==='Enter'||e.key===' ')&&document.getElementById('btn-next').style.display!=='none'){e.preventDefault();nextQ();}
+});
+initSession();
 </script>
 </body>
 </html>

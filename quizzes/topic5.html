@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Topic 5 Quiz – Savings Products</title>
+<title>Topic 5 Quiz – Savings &amp; Investments</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#09090f;--surface:#111118;--card:#16161e;--border:#2a2a38;--border-hi:#3d3d52;--text:#f0efff;--muted:#8b8aab;--dim:#55546e;--gold:#e8b84b;--gold-bg:rgba(232,184,75,0.10);--accent:#a78bfa;--accent-bg:rgba(167,139,250,0.12);--correct:#34d399;--correct-bg:rgba(52,211,153,0.12);--wrong:#f87171;--wrong-bg:rgba(248,113,113,0.12);}
@@ -14,9 +14,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 [data-theme="light"] .topbar{background:rgba(245,244,240,0.88)}
 .topbar-brand{font-size:0.9rem;font-weight:700;letter-spacing:-0.01em;display:flex;align-items:center;gap:10px}
 .topbar-brand span{font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:2px 8px}
-.back-link{font-size:0.78rem;font-weight:600;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px}
+.back-link{font-size:0.78rem;font-weight:600;color:var(--muted);text-decoration:none}
 .back-link:hover{color:var(--text)}
 .theme-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.timer-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0 12px;height:34px;cursor:pointer;font-size:0.72rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.timer-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
 .container{max-width:680px;margin:0 auto;padding:48px 20px 80px}
 .quiz-header{text-align:center;margin-bottom:40px}
 .quiz-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
@@ -26,7 +28,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .progress-bar{height:100%;background:var(--accent);border-radius:99px;transition:width 0.4s ease}
 .progress-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--dim);margin-bottom:8px}
 .q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 28px 24px;margin-bottom:20px}
-.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.q-timer{font-size:0.8rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.q-timer.warn{color:var(--wrong)}
 .q-text{font-size:1.05rem;font-weight:600;line-height:1.45;margin-bottom:22px}
 .options{display:flex;flex-direction:column;gap:10px}
 .option{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:0.9rem;font-weight:500;cursor:pointer;text-align:left;color:var(--text);transition:border-color 0.15s,background 0.15s;display:flex;align-items:center;gap:12px}
@@ -41,23 +45,25 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .feedback.show{display:block}
 .feedback.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
 .feedback.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.key-hint{font-size:0.7rem;color:var(--dim);text-align:right;margin-top:8px}
 .actions{display:flex;justify-content:flex-end;margin-top:20px}
 .btn-next{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:0.88rem;font-weight:700;cursor:pointer;display:none}
-.btn-next:hover{opacity:0.85}
 .result-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px 28px;text-align:center;display:none}
 .result-score{font-size:3.5rem;font-weight:800;letter-spacing:-0.04em;color:var(--accent);line-height:1}
 .result-out{font-size:1rem;color:var(--muted);margin:6px 0 4px}
 .result-msg{font-size:1.05rem;font-weight:600;margin-bottom:28px}
 .result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-missed{background:rgba(248,113,113,0.12);color:#f87171;border:1px solid #f87171;border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
 .btn-hub{background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .btn-hub:hover{border-color:var(--border-hi);color:var(--text)}
 </style>
 </head>
 <body>
 <div class="topbar">
-  <div class="topbar-brand"><span>Topic 5</span>Savings Products</div>
-  <div style="display:flex;align-items:center;gap:12px">
+  <div class="topbar-brand"><span>Topic 5</span>Savings &amp; Investments</div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button class="timer-btn" id="timer-toggle" onclick="toggleTimer()">⏱ Timer: Off</button>
     <a class="back-link" href="../index.html">← Hub</a>
     <button class="theme-btn" onclick="toggleTheme()">☀️</button>
   </div>
@@ -65,35 +71,122 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <div class="container">
   <div class="quiz-header">
     <div class="quiz-eyebrow">Unit 1 · Topic 5</div>
-    <h1 class="quiz-title">Savings Products</h1>
-    <p class="quiz-sub">10 questions · Select the best answer for each</p>
+    <h1 class="quiz-title">Savings &amp; Investments</h1>
+    <p class="quiz-sub">10 questions drawn from a pool of 22 · Press 1–4 to answer, Enter for next</p>
   </div>
   <div class="progress-label"><span id="prog-text">Question 1 of 10</span><span id="prog-score">Score: 0</span></div>
   <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:10%"></div></div>
   <div id="quiz-area"></div>
+  <div class="key-hint">Keyboard: 1–4 to answer · Enter or Space to advance</div>
   <div class="actions"><button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button></div>
   <div class="result-card" id="result"></div>
 </div>
 <script>
-const QS=[
-  {q:"An emergency fund is typically recommended to cover how many months of living expenses?",opts:["1–2 months","3–6 months","6–12 months","12–24 months"],ans:1,exp:"Financial guidance recommends 3–6 months of expenses in an emergency fund, held in an accessible instant-access account."},
-  {q:"AER stands for:",opts:["Annual Earnings Rate","Annual Equivalent Rate","Adjusted Effective Rate","Aggregated Exchange Rate"],ans:1,exp:"AER = Annual Equivalent Rate. It is the standard measure for comparing savings products, showing the rate if interest were compounded once a year."},
-  {q:"The AER formula is:",opts:["AER = r × n","AER = (1 + r/n)^n − 1","AER = P(1 + r)^t","AER = r/n × 100"],ans:1,exp:"AER = (1 + r/n)^n − 1, where r = nominal annual rate and n = number of compounding periods per year."},
-  {q:"A notice account typically requires how much notice before a withdrawal?",opts:["1–5 days","7–14 days","30–120 days","6–12 months"],ans:2,exp:"Notice accounts typically require 30, 60, 90 or 120 days' notice before withdrawal. In return they offer higher rates than instant access accounts."},
-  {q:"Interest earned in a Cash ISA is:",opts:["Taxed at 20% basic rate","Taxed only above the Personal Savings Allowance","Completely tax-free","Subject to capital gains tax"],ans:2,exp:"Cash ISA interest is completely tax-free regardless of amount. It also does not count towards the Personal Savings Allowance."},
-  {q:"The FSCS deposit protection limit per authorised institution is:",opts:["£50,000","£75,000","£85,000","£100,000"],ans:2,exp:"The FSCS (Financial Services Compensation Scheme) protects up to £85,000 per person per authorised institution."},
-  {q:"What is the maximum amount that can be held in Premium Bonds?",opts:["£25,000","£50,000","£75,000","£100,000"],ans:1,exp:"The maximum Premium Bonds holding is £50,000. The minimum investment is £25. Prizes are tax-free."},
-  {q:"The Personal Savings Allowance for a basic rate taxpayer is:",opts:["£500","£1,000","£5,000","Unlimited"],ans:1,exp:"Basic rate taxpayers can earn up to £1,000 of savings interest tax-free outside an ISA. Higher rate taxpayers get £500; additional rate taxpayers get £0."},
-  {q:"Simple interest on £4,000 at 5% per year for 3 years equals:",opts:["£200","£400","£600","£630.50"],ans:2,exp:"Simple interest = P × R × T = £4,000 × 0.05 × 3 = £600. Compound interest would be slightly higher as interest builds on interest."},
-  {q:"Which of the following accounts is most suitable for an emergency fund?",opts:["Fixed-rate bond (3-year)","90-day notice account","Instant access account","Stocks and Shares ISA"],ans:2,exp:"An emergency fund needs to be accessible immediately. An instant access account is ideal — funds can be withdrawn any time without penalty, even though rates are lower."}
+const TOPIC_ID='topic5';const DRAW=10;
+const POOL=[
+  {q:"The Personal Savings Allowance (PSA) for a basic rate taxpayer is:",opts:["£500 per year","£1,000 per year","£5,000 per year","Unlimited"],ans:1,exp:"Basic rate (20%) taxpayers receive a PSA of £1,000 per year — interest up to this amount is tax-free. Higher rate (40%) taxpayers get £500. Additional rate (45%) taxpayers receive no PSA."},
+  {q:"The Financial Services Compensation Scheme (FSCS) protects eligible deposits up to:",opts:["£50,000 per person per bank","£75,000 per person per bank","£85,000 per person per authorised institution","£100,000 per person per bank"],ans:2,exp:"The FSCS protects eligible deposits up to £85,000 per person per authorised institution. Joint accounts are covered up to £170,000 (£85,000 per person). Protection is automatic — no claim is needed if a firm fails."},
+  {q:"Which type of ISA has no guaranteed rate and means the value can fall as well as rise?",opts:["Cash ISA","Innovative Finance ISA","Stocks and Shares ISA","Lifetime ISA (cash)"],ans:2,exp:"A Stocks and Shares ISA invests in equities, bonds, and funds. Unlike a Cash ISA, the value is not guaranteed and can go down as well as up. However, over the long term, investments historically outperform cash savings."},
+  {q:"The Premium Bond prize fund rate (as of 2024) is approximately:",opts:["1%","3%","4.4%","6%"],ans:2,exp:"Premium Bonds are backed by NS&I (National Savings & Investments). Instead of interest, savers are entered into a monthly prize draw. The prize fund rate represents the average return — it does not guarantee any individual return."},
+  {q:"Interest on a savings account is described as 'compound' when:",opts:["The rate is fixed for the full term","It is paid monthly rather than annually","Interest is calculated on the original deposit only","Interest is calculated on both the original deposit and previously earned interest"],ans:3,exp:"Compound interest means interest earns interest. For example, £1,000 at 5% per year compounded annually: Year 1 = £1,050; Year 2 = interest on £1,050 = £1,102.50. The longer the period, the more powerful compounding becomes."},
+  {q:"NS&I (National Savings & Investments) is unique because:",opts:["It offers the highest interest rates in the market","It is backed 100% by the UK government, so all savings are fully protected","It is regulated by the FCA like other savings providers","It only accepts deposits from businesses"],ans:1,exp:"NS&I is backed by HM Treasury, meaning all savings are guaranteed by the UK government — not just up to £85,000 as with the FSCS. This makes NS&I products completely safe, though rates may not always be the highest available."},
+  {q:"A fixed-rate savings bond typically requires:",opts:["A minimum deposit of £100,000","Monthly withdrawals to maintain the rate","The saver to lock money away for a set period, with penalties for early access","Weekly top-ups to the account"],ans:2,exp:"Fixed-rate bonds (or fixed-term deposits) lock money away for a set period — typically 1, 2, or 5 years — in exchange for a guaranteed higher rate. Early withdrawal usually incurs a penalty (e.g., loss of interest for 90 or 180 days)."},
+  {q:"The Help to Save scheme is designed for people receiving:",opts:["Tax credits only","Universal Credit or Working Tax Credit","State Pension","Child Benefit"],ans:1,exp:"Help to Save is a government savings scheme for people receiving Universal Credit (earning above minimum threshold) or Working Tax Credit. It pays a 50% bonus on the highest balance — up to £1,200 in bonuses over 4 years on maximum £50/month contributions."},
+  {q:"A regular savings account typically requires the saver to:",opts:["Deposit a large lump sum once","Make a fixed monthly deposit for a set period, usually 12 months","Hold a linked current account with the same bank","Maintain a minimum balance of £10,000"],ans:1,exp:"Regular savings accounts usually require a set monthly deposit (often between £25–£300) for a fixed term, typically 12 months. They often offer attractive rates as a reward for consistent saving, though withdrawals may not be allowed without closing the account."},
+  {q:"If you invest £5,000 at 4% compound interest per year, what is the approximate value after 2 years?",opts:["£5,200","£5,400","£5,408","£5,416"],ans:2,exp:"Year 1: £5,000 × 1.04 = £5,200. Year 2: £5,200 × 1.04 = £5,408. With simple interest, Year 2 would be only £5,400. The £8 difference is the compound interest effect — interest earned on the Year 1 interest."},
+  {q:"From 6 April 2024, how many different types of ISA can you subscribe to in a single tax year?",opts:["Only 1","Up to 2","Up to 3","Multiple — one of each type"],ans:3,exp:"From 6 April 2024, HMRC changed the rules to allow savers to subscribe to multiple ISAs of the same or different types in the same tax year, as long as the total stays within the £20,000 annual allowance. Previously, you could only open one of each type per year."},
+  {q:"The FSCS temporary high balance protection covers deposits up to £1,000,000 for how long after a qualifying life event?",opts:["1 month","3 months","6 months","12 months"],ans:2,exp:"The FSCS provides temporary high balance protection of up to £1,000,000 for 6 months after certain life events: sale of a property, marriage/divorce settlement, personal injury compensation, redundancy, or inheritance. After 6 months, the standard £85,000 limit applies."},
+  {q:"The Personal Savings Allowance for a higher rate (40%) taxpayer is:",opts:["£0","£500","£1,000","£5,000"],ans:1,exp:"Higher rate taxpayers receive a PSA of £500 per year. Additional rate (45%) taxpayers have no PSA at all — all savings interest is taxable. Basic rate (20%) taxpayers get £1,000."},
+  {q:"Which of the following statements about Premium Bonds is correct?",opts:["They pay a guaranteed minimum interest rate of 3%","The minimum investment is £100","The prize fund is tax-free and backed by the UK government","Prizes are subject to income tax"],ans:2,exp:"Premium Bond prizes are completely tax-free and the scheme is backed by the UK government (via NS&I). The minimum investment is £25 (not £100). There is no guaranteed minimum return — savers could win nothing in any given month."},
+  {q:"The 'real return' on a savings account is best calculated as:",opts:["Interest rate × inflation rate","Interest rate ÷ inflation rate","Interest rate − inflation rate","Interest rate + inflation rate"],ans:2,exp:"The real return = nominal interest rate minus the inflation rate. For example, if your savings account pays 4% but inflation is 3%, your real return is only 1%. If inflation exceeds the interest rate, the real return is negative — your purchasing power falls."},
+  {q:"Which of the following is NOT a feature of a Cash ISA?",opts:["Interest is tax-free","Savings are eligible for FSCS protection up to £85,000","The annual subscription limit is £20,000","The value can fall below the amount deposited"],ans:3,exp:"A Cash ISA cannot fall in value below the amount deposited — it is a savings product with a guaranteed rate (though the rate can change on a variable-rate account). It is the Stocks and Shares ISA where the value can fall. All ISA interest is tax-free, Cash ISAs are FSCS-protected, and the ISA allowance is £20,000."},
+  {q:"Compound interest differs from simple interest in that:",opts:["It is only available on fixed-rate products","It is calculated on the principal only, not on previous interest","It calculates interest on the growing balance (principal plus accumulated interest)","It always pays a higher rate than simple interest"],ans:2,exp:"With simple interest, you earn interest only on the original principal. With compound interest, you earn interest on the principal plus all previously earned interest. This creates exponential growth over time — the longer the investment, the greater the difference between simple and compound returns."},
+  {q:"A Stocks and Shares ISA is most suitable for:",opts:["An emergency fund needed within 6 months","Short-term savings of 1–2 years","Long-term wealth building over 5+ years with tolerance for volatility","Anyone who cannot accept any risk of loss"],ans:2,exp:"Stocks and Shares ISAs are best suited to long-term investors (5+ years) who can tolerate market volatility. Over shorter periods, market falls can reduce the value. Over longer periods, equities have historically outperformed cash, but past performance is not a guarantee of future returns."},
+  {q:"Which statement about the Innovative Finance ISA (IFISA) is correct?",opts:["It invests only in government bonds","It holds peer-to-peer loans and crowdfunding investments, which are NOT covered by the FSCS","It is guaranteed by the Bank of England","It is the same as a Stocks and Shares ISA"],ans:1,exp:"An IFISA holds peer-to-peer loans or crowdfunding debt investments. These are NOT protected by the FSCS — if the platform fails or borrowers default, you could lose money. IFISAs carry significantly more risk than Cash ISAs or even Stocks and Shares ISAs."},
+  {q:"The Junior ISA (JISA) annual subscription limit for 2024/25 is:",opts:["£4,000","£6,000","£9,000","£20,000"],ans:2,exp:"The JISA limit is £9,000 per tax year — separate from the adult ISA £20,000 allowance. Parents/guardians manage the account; the child cannot access the money until they turn 18, when it rolls into an adult ISA automatically."},
+  {q:"What does 'AER' stand for, and what does it tell savers?",opts:["Annual Earnings Rate — the rate before tax","Annual Equivalent Rate — the effective annual interest rate assuming interest is compounded and credited once a year","Adjusted Expected Return — the real return after inflation","Annual Error Rate — the variance in interest payments"],ans:1,exp:"AER (Annual Equivalent Rate) shows the effective annual interest rate, taking into account how often interest is compounded. It allows fair comparison between accounts that pay interest at different frequencies (monthly vs annually). A higher AER means a better return, all else equal."},
+  {q:"Which savings product pays interest that is exempt from income tax for eligible claimants and offers a 50% government bonus?",opts:["Cash ISA","Premium Bonds","Help to Save","NS&I Income Bonds"],ans:2,exp:"Help to Save pays a 50% government bonus on the highest balance achieved in each 2-year period. Open to Universal Credit (above earnings threshold) and Working Tax Credit claimants. Maximum £50/month = up to £1,200 in government bonuses over 4 years."}
 ];
-let cur=0,score=0,answered=false;
-function render(){const q=QS[cur];const L=['A','B','C','D'];document.getElementById('prog-text').textContent=`Question ${cur+1} of ${QS.length}`;document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('prog-bar').style.width=`${((cur+1)/QS.length)*100}%`;document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num">Question ${cur+1}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${L[i]}</span>${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`;document.getElementById('btn-next').style.display='none';answered=false;}
-function pick(i){if(answered)return;answered=true;const q=QS[cur];const fb=document.getElementById('feedback');document.querySelectorAll('.option').forEach(b=>b.disabled=true);if(i===q.ans){score++;document.getElementById(`opt${i}`).className='option correct';fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;}else{document.getElementById(`opt${i}`).className='option wrong';document.getElementById(`opt${q.ans}`).className='option correct';fb.className='feedback show wrong';fb.textContent='✗ '+q.exp;}document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('btn-next').style.display='block';document.getElementById('btn-next').textContent=cur<QS.length-1?'Next →':'See Results';}
-function nextQ(){cur++;if(cur>=QS.length){showResult();return;}render();}
-function showResult(){document.getElementById('quiz-area').style.display='none';document.getElementById('btn-next').style.display='none';document.querySelector('.progress-label').style.display='none';document.querySelector('.progress-bar-wrap').style.display='none';const pct=Math.round((score/QS.length)*100);const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';const r=document.getElementById('result');r.style.display='block';r.innerHTML=`<div class="result-score">${score}/${QS.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div><div class="result-actions"><a class="btn-retry" href="topic5.html">↺ Retry</a><a class="btn-hub" href="../index.html">← Back to Hub</a></div>`;}
+POOL.forEach((q,i)=>q._id=i);
+let sessionQ=[],cur=0,score=0,answered=false,finished=false;
+let timerOn=false,timerSecs=60,timerInterval=null;
+const retryMissed=location.search.includes('retry=missed');
+try{timerOn=localStorage.getItem(TOPIC_ID+'_timer')==='true';}catch(e){}
+function updateTimerBtn(){const b=document.getElementById('timer-toggle');if(!b)return;b.textContent='⏱ Timer: '+(timerOn?'On':'Off');b.className='timer-btn'+(timerOn?' active':'');}
+function initSession(){
+  let pool;
+  if(retryMissed){
+    try{const m=JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]');pool=POOL.filter(q=>m.includes(q._id));}catch(e){pool=[];}
+    if(!pool.length)pool=[...POOL];
+  }else{
+    pool=[...POOL];
+    try{localStorage.removeItem(TOPIC_ID+'_missed');}catch(e){}
+  }
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  sessionQ=pool.slice(0,Math.min(DRAW,pool.length));
+  cur=0;score=0;answered=false;finished=false;
+  updateTimerBtn();render();
+}
+function render(){
+  const q=sessionQ[cur];const L=['A','B','C','D'];
+  document.getElementById('prog-text').textContent=`Question ${cur+1} of ${sessionQ.length}`;
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  document.getElementById('prog-bar').style.width=`${((cur+1)/sessionQ.length)*100}%`;
+  document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num"><span>Question ${cur+1}</span>${timerOn?`<span class="q-timer" id="q-timer">${timerSecs}s</span>`:''}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${L[i]}</span>${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`;
+  document.getElementById('btn-next').style.display='none';
+  answered=false;
+  if(timerOn)startTimer();
+}
+function startTimer(){
+  clearInterval(timerInterval);timerSecs=60;
+  timerInterval=setInterval(()=>{
+    timerSecs--;
+    const el=document.getElementById('q-timer');
+    if(el){el.textContent=timerSecs+'s';if(timerSecs<=10)el.classList.add('warn');}
+    if(timerSecs<=0){clearInterval(timerInterval);pick(-1);}
+  },1000);
+}
+function pick(i){
+  if(answered)return;answered=true;clearInterval(timerInterval);
+  const q=sessionQ[cur];const fb=document.getElementById('feedback');
+  document.querySelectorAll('.option').forEach(b=>b.disabled=true);
+  if(i===q.ans){
+    score++;
+    if(i>=0)document.getElementById(`opt${i}`).className='option correct';
+    fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;
+  }else{
+    if(i>=0)document.getElementById(`opt${i}`).className='option wrong';
+    document.getElementById(`opt${q.ans}`).className='option correct';
+    fb.className='feedback show wrong';fb.textContent=(i===-1?'⏱ Time\'s up! ':'✗ ')+q.exp;
+    try{const m=JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]');if(!m.includes(q._id))m.push(q._id);localStorage.setItem(TOPIC_ID+'_missed',JSON.stringify(m));}catch(e){}
+  }
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  const nb=document.getElementById('btn-next');nb.style.display='block';nb.textContent=cur<sessionQ.length-1?'Next →':'See Results';
+}
+function nextQ(){cur++;if(cur>=sessionQ.length){showResult();return;}render();}
+function showResult(){
+  finished=true;clearInterval(timerInterval);
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('btn-next').style.display='none';
+  document.querySelector('.progress-label').style.display='none';
+  document.querySelector('.progress-bar-wrap').style.display='none';
+  document.querySelector('.key-hint').style.display='none';
+  const pct=Math.round((score/sessionQ.length)*100);
+  const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';
+  try{localStorage.setItem(TOPIC_ID+'_last',JSON.stringify({score,total:sessionQ.length,pct,date:new Date().toISOString()}));}catch(e){}
+  let missedCount=0;try{missedCount=(JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]')).length;}catch(e){}
+  const base=location.href.split('?')[0];
+  const r=document.getElementById('result');r.style.display='block';
+  r.innerHTML=`<div class="result-score">${score}/${sessionQ.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div><div class="result-actions"><a class="btn-retry" href="${base}">↺ New Quiz</a>${missedCount>0?`<a class="btn-missed" href="${base}?retry=missed">↯ Retry ${missedCount} missed</a>`:''}<a class="btn-hub" href="../index.html">← Hub</a></div>`;
+}
+function toggleTimer(){timerOn=!timerOn;try{localStorage.setItem(TOPIC_ID+'_timer',timerOn);}catch(e){}updateTimerBtn();}
 function toggleTheme(){const c=document.documentElement.getAttribute('data-theme')||'dark';const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.querySelector('.theme-btn').textContent=n==='dark'?'☀️':'🌙';}
-render();
+document.addEventListener('keydown',e=>{
+  if(finished)return;
+  if(!answered){if(e.key==='1')pick(0);else if(e.key==='2')pick(1);else if(e.key==='3')pick(2);else if(e.key==='4')pick(3);}
+  else if((e.key==='Enter'||e.key===' ')&&document.getElementById('btn-next').style.display!=='none'){e.preventDefault();nextQ();}
+});
+initSession();
 </script>
 </body>
 </html>

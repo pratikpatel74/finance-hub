@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Topic 6 Quiz – Borrowing Products</title>
+<title>Topic 6 Quiz – Credit &amp; Debt</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#09090f;--surface:#111118;--card:#16161e;--border:#2a2a38;--border-hi:#3d3d52;--text:#f0efff;--muted:#8b8aab;--dim:#55546e;--gold:#e8b84b;--gold-bg:rgba(232,184,75,0.10);--accent:#34d399;--accent-bg:rgba(52,211,153,0.12);--correct:#34d399;--correct-bg:rgba(52,211,153,0.12);--wrong:#f87171;--wrong-bg:rgba(248,113,113,0.12);}
@@ -17,6 +17,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .back-link{font-size:0.78rem;font-weight:600;color:var(--muted);text-decoration:none}
 .back-link:hover{color:var(--text)}
 .theme-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.timer-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0 12px;height:34px;cursor:pointer;font-size:0.72rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.timer-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
 .container{max-width:680px;margin:0 auto;padding:48px 20px 80px}
 .quiz-header{text-align:center;margin-bottom:40px}
 .quiz-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
@@ -26,7 +28,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .progress-bar{height:100%;background:var(--accent);border-radius:99px;transition:width 0.4s ease}
 .progress-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--dim);margin-bottom:8px}
 .q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 28px 24px;margin-bottom:20px}
-.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.q-timer{font-size:0.8rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.q-timer.warn{color:var(--wrong)}
 .q-text{font-size:1.05rem;font-weight:600;line-height:1.45;margin-bottom:22px}
 .options{display:flex;flex-direction:column;gap:10px}
 .option{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:0.9rem;font-weight:500;cursor:pointer;text-align:left;color:var(--text);transition:border-color 0.15s,background 0.15s;display:flex;align-items:center;gap:12px}
@@ -41,6 +45,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .feedback.show{display:block}
 .feedback.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
 .feedback.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.key-hint{font-size:0.7rem;color:var(--dim);text-align:right;margin-top:8px}
 .actions{display:flex;justify-content:flex-end;margin-top:20px}
 .btn-next{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:0.88rem;font-weight:700;cursor:pointer;display:none}
 .result-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px 28px;text-align:center;display:none}
@@ -48,15 +53,17 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .result-out{font-size:1rem;color:var(--muted);margin:6px 0 4px}
 .result-msg{font-size:1.05rem;font-weight:600;margin-bottom:28px}
 .result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-retry{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-missed{background:rgba(248,113,113,0.12);color:#f87171;border:1px solid #f87171;border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
 .btn-hub{background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px 24px;font-size:0.88rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .btn-hub:hover{border-color:var(--border-hi);color:var(--text)}
 </style>
 </head>
 <body>
 <div class="topbar">
-  <div class="topbar-brand"><span>Topic 6</span>Borrowing Products</div>
-  <div style="display:flex;align-items:center;gap:12px">
+  <div class="topbar-brand"><span>Topic 6</span>Credit &amp; Debt</div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button class="timer-btn" id="timer-toggle" onclick="toggleTimer()">⏱ Timer: Off</button>
     <a class="back-link" href="../index.html">← Hub</a>
     <button class="theme-btn" onclick="toggleTheme()">☀️</button>
   </div>
@@ -64,35 +71,122 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <div class="container">
   <div class="quiz-header">
     <div class="quiz-eyebrow">Unit 1 · Topic 6</div>
-    <h1 class="quiz-title">Borrowing Products</h1>
-    <p class="quiz-sub">10 questions · Select the best answer for each</p>
+    <h1 class="quiz-title">Credit &amp; Debt</h1>
+    <p class="quiz-sub">10 questions drawn from a pool of 22 · Press 1–4 to answer, Enter for next</p>
   </div>
   <div class="progress-label"><span id="prog-text">Question 1 of 10</span><span id="prog-score">Score: 0</span></div>
   <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:10%"></div></div>
   <div id="quiz-area"></div>
+  <div class="key-hint">Keyboard: 1–4 to answer · Enter or Space to advance</div>
   <div class="actions"><button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button></div>
   <div class="result-card" id="result"></div>
 </div>
 <script>
-const QS=[
-  {q:"APR stands for:",opts:["Annual Payment Rate","Annual Percentage Rate","Adjusted Principal Rate","Authorised Purchase Rate"],ans:1,exp:"APR = Annual Percentage Rate. It includes both the interest rate and any compulsory fees, allowing fair comparison between borrowing products."},
-  {q:"Section 75 of the Consumer Credit Act protects purchases made on a credit card between:",opts:["£10 and £5,000","£100 and £30,000","£500 and £50,000","£1,000 and £100,000"],ans:1,exp:"Section 75 makes the credit card company jointly liable with the retailer for purchases between £100 and £30,000 — useful if a retailer goes bust or goods are not delivered."},
-  {q:"Which type of overdraft is agreed with the bank in advance?",opts:["Unarranged overdraft","Unauthorised overdraft","Arranged overdraft","Revolving overdraft"],ans:2,exp:"An arranged (authorised) overdraft is agreed in advance with the bank. An unarranged overdraft occurs when spending exceeds the limit without prior agreement — usually attracting higher fees."},
-  {q:"A CCJ (County Court Judgment) is:",opts:["A credit card with a low limit","A court order for an unpaid debt","A type of payday loan","A credit score calculation method"],ans:1,exp:"A CCJ is a court order issued when someone fails to repay a debt. It stays on the credit file for 6 years and significantly damages creditworthiness."},
-  {q:"Which type of credit card is best suited to spreading the cost of a large purchase over time interest-free?",opts:["Balance transfer card","0% purchase card","Cashback card","Travel rewards card"],ans:1,exp:"A 0% purchase card allows spending now and repaying over the 0% promotional period without interest — ideal for planned large purchases."},
-  {q:"Credit reference agencies typically hold data on individuals for how long?",opts:["2 years","4 years","6 years","10 years"],ans:2,exp:"Most credit information stays on a credit file for 6 years, including CCJs, defaults, late payments and bankruptcy orders."},
-  {q:"Which of the following borrowing products typically has the highest APR?",opts:["Mortgage","Personal loan","Credit card","Payday loan"],ans:3,exp:"Payday loans typically carry extremely high APRs (sometimes over 1,000%), making them the most expensive form of borrowing for short-term cash needs."},
-  {q:"A personal loan is typically:",opts:["Secured against the borrower's home","Unsecured — no collateral required","Only available to business customers","Offered exclusively by credit unions"],ans:1,exp:"Personal loans are typically unsecured — the lender has no claim on specific assets if the borrower defaults. They usually offer fixed interest rates and fixed monthly repayments."},
-  {q:"The three main credit reference agencies in the UK are:",opts:["Barclays, HSBC, Lloyds","Experian, Equifax, TransUnion","FCA, PRA, FOS","Moody's, S&P, Fitch"],ans:1,exp:"The three main CRAs in the UK are Experian, Equifax and TransUnion. Lenders use these to assess creditworthiness when someone applies for credit."},
-  {q:"APR includes:",opts:["Only the interest rate charged","Interest rate plus all compulsory charges and fees","Interest rate minus any cashback","Only the arrangement fee"],ans:1,exp:"APR includes the interest rate plus all compulsory charges (arrangement fees, annual fees, etc.), making it a comprehensive measure of borrowing cost."}
+const TOPIC_ID='topic6';const DRAW=10;
+const POOL=[
+  {q:"The Annual Percentage Rate (APR) is used to compare credit products because it:",opts:["Shows only the monthly interest rate","Includes both the interest rate and mandatory fees, expressed as a yearly rate","Shows the total amount repayable over the loan term","Is set by the Bank of England"],ans:1,exp:"APR (Annual Percentage Rate) includes the interest rate plus any mandatory fees, expressed as a single annual figure. It allows like-for-like comparison between credit products. The representative APR is offered to at least 51% of successful applicants."},
+  {q:"A credit score is best described as:",opts:["Your exact bank balance at a point in time","A numerical rating of your likelihood of repaying debt, based on credit history","A record of all your assets and liabilities","A government-issued financial identity number"],ans:1,exp:"A credit score is a numerical representation of your creditworthiness — how likely you are to repay debt based on your credit history. Lenders use it (along with other factors) to decide whether to lend and at what rate. It is calculated by credit reference agencies like Experian, Equifax, and TransUnion."},
+  {q:"Which of the following is NOT typically recorded on your credit file?",opts:["Electoral roll registration","Outstanding loan balances","Your salary or income","County Court Judgements (CCJs)"],ans:2,exp:"Your salary is NOT on your credit file. Lenders may ask for proof of income separately, but it is not shared via credit reference agencies. What is recorded includes: electoral roll, credit accounts, payment history, public records (CCJs, bankruptcy), and credit searches."},
+  {q:"Under Section 75 of the Consumer Credit Act 1974, you have protection when paying by credit card for purchases between:",opts:["Any amount","£50 and £30,000","£100 and £30,000","£250 and £50,000"],ans:2,exp:"Section 75 makes the credit card company jointly liable with the retailer for purchases between £100 and £30,000 (the total transaction, not the amount put on the card). If the goods/services are faulty or the retailer fails, you can claim from the card provider."},
+  {q:"A debt consolidation loan is typically used to:",opts:["Increase the total amount of debt owed","Combine multiple debts into a single loan, often with a lower monthly payment","Improve your credit score immediately","Avoid paying any interest on existing debts"],ans:1,exp:"Debt consolidation combines multiple debts (credit cards, loans, overdrafts) into one loan, simplifying repayments. The monthly payment may be lower, but the loan term may be longer — meaning more total interest paid. It is not always cheaper in the long run."},
+  {q:"A Standard Variable Rate (SVR) mortgage is best described as:",opts:["A rate fixed for the entire mortgage term","A rate that tracks the Bank of England base rate exactly","A variable rate set by the lender that can change at any time","A rate that only applies to buy-to-let mortgages"],ans:2,exp:"The SVR is the lender's default variable rate — it can change at any time at the lender's discretion. Borrowers typically revert to the SVR after a fixed or tracker deal ends. SVRs are often higher than introductory rates, so remortgaging at the end of a deal is usually advisable."},
+  {q:"A balance transfer credit card allows you to:",opts:["Transfer cash from your bank account to pay bills","Move existing credit card debt to a new card, often with a 0% promotional interest period","Consolidate all debts including mortgages","Earn cashback on purchases automatically"],ans:1,exp:"A balance transfer card moves existing credit card debt to a new card with a 0% (or low) promotional interest rate for a set period. This can save significant interest if the balance is cleared within the deal period. A transfer fee (typically 1–3%) usually applies."},
+  {q:"Which of the following describes 'revolving credit'?",opts:["A fixed loan repaid in equal monthly instalments","A credit facility with a set limit that can be drawn down, repaid, and used again","A loan secured against property","A government-guaranteed student loan"],ans:1,exp:"Revolving credit (such as a credit card or overdraft) gives access to a credit limit that replenishes as you repay. Unlike an instalment loan with fixed payments, a revolving credit user can borrow up to the limit repeatedly — making it flexible but potentially encouraging persistent debt."},
+  {q:"An Individual Voluntary Arrangement (IVA) is:",opts:["An informal agreement with creditors to freeze interest","A formal insolvency procedure lasting around 5–6 years, managed by an insolvency practitioner","A government scheme to write off student debt","A court order to repossess assets"],ans:1,exp:"An IVA is a formal, legally binding insolvency procedure. A licensed insolvency practitioner negotiates with creditors to accept reduced repayments over typically 5–6 years. Any remaining debt is written off at the end. It affects credit for 6 years and appears on the Insolvency Register."},
+  {q:"A secured loan differs from an unsecured loan in that:",opts:["It always has a lower APR","It is backed by a government guarantee","An asset (usually a home) is used as security, and can be repossessed if repayments are missed","It cannot be used to consolidate debt"],ans:2,exp:"A secured loan is backed by an asset — usually property. This reduces the lender's risk, so rates are typically lower than unsecured loans. However, if you fail to repay, the lender can repossess the asset. A mortgage is the most common form of secured loan."},
+  {q:"Buy Now Pay Later (BNPL) products (e.g., Klarna, Clearpay) are characterised by:",opts:["Fixed monthly interest charges from day one","Government-guaranteed repayment terms","Deferred or split payment options, where missed payments can affect your credit score","Always being regulated by the FCA under the Consumer Credit Act"],ans:2,exp:"BNPL allows purchases to be deferred (e.g., 30 days) or split into instalments (e.g., 3 payments). If payments are missed, it can be referred to a debt collector and reported to credit reference agencies. As of 2024, BNPL is being brought into FCA regulation in the UK."},
+  {q:"Which of the following will NOT improve your credit score?",opts:["Registering on the electoral roll","Making all loan repayments on time","Closing all old credit accounts immediately","Having a stable address history"],ans:2,exp:"Closing old credit accounts can actually harm your credit score by reducing your available credit (raising your utilisation ratio) and shortening your credit history. Improving tactics include: registering to vote, making timely payments, keeping utilisation low, and maintaining a stable address."},
+  {q:"Under the Consumer Credit Act 1974, lenders must provide a 'cooling-off period' of how many days for credit agreements signed off-premises (e.g., at home)?",opts:["5 days","7 days","14 days","28 days"],ans:2,exp:"The Consumer Credit Act 1974 (as amended) provides a 14-day cooling-off period for most consumer credit agreements, during which the borrower can withdraw without penalty. This also aligns with the Consumer Contracts Regulations for distance-selling of financial services."},
+  {q:"A guarantor loan requires:",opts:["The borrower to own a property","A government subsidy toward repayments","A third party (the guarantor) to agree to cover repayments if the borrower defaults","The loan to be secured against a savings account"],ans:2,exp:"A guarantor loan involves a third party — usually a family member or friend with good credit — agreeing to cover repayments if the borrower defaults. It enables those with poor or no credit history to access credit. The guarantor's credit score will be affected if the borrower fails to repay."},
+  {q:"Which Act provides the main consumer credit protections in the UK, including licensing requirements for lenders and remedies for unfair agreements?",opts:["Financial Services Act 2012","Consumer Credit Act 1974","Banking Act 2009","Equality Act 2010"],ans:1,exp:"The Consumer Credit Act 1974 (CCA) is the primary legislation governing consumer credit in the UK. It covers licensing of lenders, disclosure requirements, Section 75 protection, unfair credit relationships, and cooling-off periods. It applies to most personal credit agreements up to £25,000 (some provisions to higher amounts)."},
+  {q:"'Credit utilisation' refers to:",opts:["The number of credit applications made in a year","The percentage of your available credit limit that you are using","The total interest paid on credit accounts","How long you have held a credit account"],ans:1,exp:"Credit utilisation is the proportion of your available revolving credit that you are using. For example: £2,000 balance on a £10,000 limit = 20% utilisation. Keeping utilisation below 30% is generally advised for a good credit score. High utilisation signals financial stress to lenders."},
+  {q:"What is the key difference between a charge card and a credit card?",opts:["Charge cards have a lower spending limit","Credit cards must be paid in full each month; charge cards allow minimum payments","Charge cards must be paid in full each month; credit cards allow minimum payments","Charge cards earn more cashback rewards"],ans:2,exp:"A charge card (e.g., American Express Centurion) requires the full balance to be paid each month — there is no option to carry a balance and pay interest. A credit card allows you to carry a balance and make minimum payments (accruing interest). Charge cards often have no pre-set spending limit but higher annual fees."},
+  {q:"The primary purpose of a credit reference agency (CRA) is to:",opts:["Lend money to consumers on behalf of banks","Regulate consumer credit advertising","Collect, store, and share credit data to help lenders assess creditworthiness","Set the interest rates banks can charge"],ans:2,exp:"Credit reference agencies (Experian, Equifax, TransUnion in the UK) collect financial data from lenders, courts, and public records, and share it with subscribing lenders to help them assess credit risk. Consumers have the right to access their own credit file under UK GDPR."},
+  {q:"Which debt solution legally writes off remaining debts after 12 months in England, Wales, and Northern Ireland?",opts:["Debt Management Plan (DMP)","Individual Voluntary Arrangement (IVA)","Bankruptcy","Debt Relief Order (DRO)"],ans:2,exp:"Bankruptcy (for individuals) is a legal status declared by court that can write off most debts after 12 months. Restrictions apply during the bankruptcy period (including business activities). Bankruptcy stays on your credit file for 6 years. A DRO (Debt Relief Order) also writes off debts in 12 months but has stricter eligibility (debt under £30,000, assets under £2,000)."},
+  {q:"Which of the following is an example of 'predatory lending'?",opts:["Offering a 0% balance transfer card with a 2% fee","Advertising a payday loan at 1,509% APR targeting financially vulnerable consumers","Providing a mortgage at the standard variable rate","Refusing a loan application due to a low credit score"],ans:1,exp:"Predatory lending involves targeting vulnerable consumers with exploitative products — extremely high APRs, unclear fees, or aggressive marketing. Payday lenders historically used APRs of hundreds or thousands of percent. The FCA introduced a price cap on payday loans in 2015 to protect consumers."},
+  {q:"A Debt Management Plan (DMP) is:",opts:["A formal insolvency procedure requiring court approval","An informal arrangement with creditors to repay debt at a reduced rate, managed by a third party","A government scheme to write off 50% of debt","A legal order to freeze interest on all debts"],ans:1,exp:"A DMP is an informal (non-statutory) arrangement where a debt management firm negotiates with creditors to accept reduced monthly payments. Interest may be frozen but creditors are not obliged to agree. DMPs are not legally binding, so creditors can still take action. Free DMP services are offered by StepChange and National Debtline."},
+  {q:"The 'minimum payment' on a credit card is typically:",opts:["The full balance due each month","A fixed £10 or 1–2% of the outstanding balance, whichever is greater","A fixed amount set by the FCA","The interest charge for that month only"],ans:1,exp:"The minimum payment is usually the greater of a fixed amount (e.g., £25) or a small percentage of the outstanding balance (typically 1–2%). Paying only the minimum dramatically increases total interest paid and extends the repayment period. The FCA requires credit card statements to show how long it takes to repay if only minimums are paid."}
 ];
-let cur=0,score=0,answered=false;
-function render(){const q=QS[cur];const L=['A','B','C','D'];document.getElementById('prog-text').textContent=`Question ${cur+1} of ${QS.length}`;document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('prog-bar').style.width=`${((cur+1)/QS.length)*100}%`;document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num">Question ${cur+1}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${L[i]}</span>${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`;document.getElementById('btn-next').style.display='none';answered=false;}
-function pick(i){if(answered)return;answered=true;const q=QS[cur];const fb=document.getElementById('feedback');document.querySelectorAll('.option').forEach(b=>b.disabled=true);if(i===q.ans){score++;document.getElementById(`opt${i}`).className='option correct';fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;}else{document.getElementById(`opt${i}`).className='option wrong';document.getElementById(`opt${q.ans}`).className='option correct';fb.className='feedback show wrong';fb.textContent='✗ '+q.exp;}document.getElementById('prog-score').textContent=`Score: ${score}`;document.getElementById('btn-next').style.display='block';document.getElementById('btn-next').textContent=cur<QS.length-1?'Next →':'See Results';}
-function nextQ(){cur++;if(cur>=QS.length){showResult();return;}render();}
-function showResult(){document.getElementById('quiz-area').style.display='none';document.getElementById('btn-next').style.display='none';document.querySelector('.progress-label').style.display='none';document.querySelector('.progress-bar-wrap').style.display='none';const pct=Math.round((score/QS.length)*100);const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';const r=document.getElementById('result');r.style.display='block';r.innerHTML=`<div class="result-score">${score}/${QS.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div><div class="result-actions"><a class="btn-retry" href="topic6.html">↺ Retry</a><a class="btn-hub" href="../index.html">← Back to Hub</a></div>`;}
+POOL.forEach((q,i)=>q._id=i);
+let sessionQ=[],cur=0,score=0,answered=false,finished=false;
+let timerOn=false,timerSecs=60,timerInterval=null;
+const retryMissed=location.search.includes('retry=missed');
+try{timerOn=localStorage.getItem(TOPIC_ID+'_timer')==='true';}catch(e){}
+function updateTimerBtn(){const b=document.getElementById('timer-toggle');if(!b)return;b.textContent='⏱ Timer: '+(timerOn?'On':'Off');b.className='timer-btn'+(timerOn?' active':'');}
+function initSession(){
+  let pool;
+  if(retryMissed){
+    try{const m=JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]');pool=POOL.filter(q=>m.includes(q._id));}catch(e){pool=[];}
+    if(!pool.length)pool=[...POOL];
+  }else{
+    pool=[...POOL];
+    try{localStorage.removeItem(TOPIC_ID+'_missed');}catch(e){}
+  }
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  sessionQ=pool.slice(0,Math.min(DRAW,pool.length));
+  cur=0;score=0;answered=false;finished=false;
+  updateTimerBtn();render();
+}
+function render(){
+  const q=sessionQ[cur];const L=['A','B','C','D'];
+  document.getElementById('prog-text').textContent=`Question ${cur+1} of ${sessionQ.length}`;
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  document.getElementById('prog-bar').style.width=`${((cur+1)/sessionQ.length)*100}%`;
+  document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num"><span>Question ${cur+1}</span>${timerOn?`<span class="q-timer" id="q-timer">${timerSecs}s</span>`:''}</div><div class="q-text">${q.q}</div><div class="options">${q.opts.map((o,i)=>`<button class="option" onclick="pick(${i})" id="opt${i}"><span class="opt-letter">${L[i]}</span>${o}</button>`).join('')}</div><div class="feedback" id="feedback"></div></div>`;
+  document.getElementById('btn-next').style.display='none';
+  answered=false;
+  if(timerOn)startTimer();
+}
+function startTimer(){
+  clearInterval(timerInterval);timerSecs=60;
+  timerInterval=setInterval(()=>{
+    timerSecs--;
+    const el=document.getElementById('q-timer');
+    if(el){el.textContent=timerSecs+'s';if(timerSecs<=10)el.classList.add('warn');}
+    if(timerSecs<=0){clearInterval(timerInterval);pick(-1);}
+  },1000);
+}
+function pick(i){
+  if(answered)return;answered=true;clearInterval(timerInterval);
+  const q=sessionQ[cur];const fb=document.getElementById('feedback');
+  document.querySelectorAll('.option').forEach(b=>b.disabled=true);
+  if(i===q.ans){
+    score++;
+    if(i>=0)document.getElementById(`opt${i}`).className='option correct';
+    fb.className='feedback show correct';fb.textContent='✓ Correct! '+q.exp;
+  }else{
+    if(i>=0)document.getElementById(`opt${i}`).className='option wrong';
+    document.getElementById(`opt${q.ans}`).className='option correct';
+    fb.className='feedback show wrong';fb.textContent=(i===-1?'⏱ Time\'s up! ':'✗ ')+q.exp;
+    try{const m=JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]');if(!m.includes(q._id))m.push(q._id);localStorage.setItem(TOPIC_ID+'_missed',JSON.stringify(m));}catch(e){}
+  }
+  document.getElementById('prog-score').textContent=`Score: ${score}`;
+  const nb=document.getElementById('btn-next');nb.style.display='block';nb.textContent=cur<sessionQ.length-1?'Next →':'See Results';
+}
+function nextQ(){cur++;if(cur>=sessionQ.length){showResult();return;}render();}
+function showResult(){
+  finished=true;clearInterval(timerInterval);
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('btn-next').style.display='none';
+  document.querySelector('.progress-label').style.display='none';
+  document.querySelector('.progress-bar-wrap').style.display='none';
+  document.querySelector('.key-hint').style.display='none';
+  const pct=Math.round((score/sessionQ.length)*100);
+  const msg=pct>=80?'Excellent work! 🎉':pct>=60?'Good effort — review the explanations above.':'Keep studying — you\'ve got this!';
+  try{localStorage.setItem(TOPIC_ID+'_last',JSON.stringify({score,total:sessionQ.length,pct,date:new Date().toISOString()}));}catch(e){}
+  let missedCount=0;try{missedCount=(JSON.parse(localStorage.getItem(TOPIC_ID+'_missed')||'[]')).length;}catch(e){}
+  const base=location.href.split('?')[0];
+  const r=document.getElementById('result');r.style.display='block';
+  r.innerHTML=`<div class="result-score">${score}/${sessionQ.length}</div><div class="result-out">${pct}% correct</div><div class="result-msg">${msg}</div><div class="result-actions"><a class="btn-retry" href="${base}">↺ New Quiz</a>${missedCount>0?`<a class="btn-missed" href="${base}?retry=missed">↯ Retry ${missedCount} missed</a>`:''}<a class="btn-hub" href="../index.html">← Hub</a></div>`;
+}
+function toggleTimer(){timerOn=!timerOn;try{localStorage.setItem(TOPIC_ID+'_timer',timerOn);}catch(e){}updateTimerBtn();}
 function toggleTheme(){const c=document.documentElement.getAttribute('data-theme')||'dark';const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.querySelector('.theme-btn').textContent=n==='dark'?'☀️':'🌙';}
-render();
+document.addEventListener('keydown',e=>{
+  if(finished)return;
+  if(!answered){if(e.key==='1')pick(0);else if(e.key==='2')pick(1);else if(e.key==='3')pick(2);else if(e.key==='4')pick(3);}
+  else if((e.key==='Enter'||e.key===' ')&&document.getElementById('btn-next').style.display!=='none'){e.preventDefault();nextQ();}
+});
+initSession();
 </script>
 </body>
 </html>

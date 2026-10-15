@@ -276,6 +276,12 @@ body {
   .stat-cell:last-child { border-bottom: none; }
   .topbar { padding: 0 16px; }
 }
+
+.score-badge{font-size:0.66rem;font-weight:700;padding:2px 8px;border-radius:5px;letter-spacing:0.04em;display:none;margin-left:auto;align-self:flex-start;margin-top:3px}
+.score-badge.pass{background:rgba(52,211,153,0.15);color:#34d399}
+.score-badge.fail{background:rgba(248,113,113,0.15);color:#f87171}
+[data-theme="light"] .score-badge.pass{background:rgba(5,150,105,0.12);color:#059669}
+[data-theme="light"] .score-badge.fail{background:rgba(220,38,38,0.12);color:#dc2626}
 </style>
 </head>
 <body>
@@ -293,14 +299,14 @@ body {
 <div class="hero">
   <div class="hero-eyebrow">A-Level Finance · Unit 1</div>
   <h1>Financial Services<br><em>Study Hub</em></h1>
-  <p class="hero-sub">Six topics. Ten questions each. Downloadable summaries. Everything you need for Unit 1.</p>
+  <p class="hero-sub">Six topics · 10 questions drawn from a pool of 22 · Summaries and source material for every topic.</p>
   <div class="stats-strip">
     <div class="stat-cell">
       <div class="stat-num">6</div>
       <div class="stat-label">Topics</div>
     </div>
     <div class="stat-cell">
-      <div class="stat-num">60</div>
+      <div class="stat-num">132</div>
       <div class="stat-label">Questions</div>
     </div>
     <div class="stat-cell">
@@ -327,6 +333,7 @@ body {
             <div class="card-num">Topic 1</div>
             <div class="card-title">Purposes of Money</div>
           </div>
+        <span class="score-badge" id="score-t1"></span>
         </div>
         <div class="card-divider"></div>
         <p class="card-desc">Functions of money, types of financial institution, payment systems (Faster Payments, CHAPS, Bacs), personal and business finance needs.</p>
@@ -347,6 +354,7 @@ body {
             <div class="card-num">Topic 2</div>
             <div class="card-title">The Personal Life Cycle</div>
           </div>
+        <span class="score-badge" id="score-t2"></span>
         </div>
         <div class="card-divider"></div>
         <p class="card-desc">Financial needs at each life stage (childhood to retirement), ISAs, pensions, mortgages, protection products and life events.</p>
@@ -367,6 +375,7 @@ body {
             <div class="card-num">Topic 5</div>
             <div class="card-title">Savings Products</div>
           </div>
+        <span class="score-badge" id="score-t5"></span>
         </div>
         <div class="card-divider"></div>
         <p class="card-desc">Instant access accounts, fixed-term deposits, notice accounts, Cash ISAs, AER and interest calculations, comparing savings products.</p>
@@ -387,6 +396,7 @@ body {
             <div class="card-num">Topic 6</div>
             <div class="card-title">Borrowing Products</div>
           </div>
+        <span class="score-badge" id="score-t6"></span>
         </div>
         <div class="card-divider"></div>
         <p class="card-desc">APR, overdrafts, credit cards (types and protections), personal loans, payday loans, credit reference agencies and CCJs.</p>
@@ -407,6 +417,7 @@ body {
             <div class="card-num">Topic 7</div>
             <div class="card-title">Providers of Financial Services</div>
           </div>
+        <span class="score-badge" id="score-t7"></span>
         </div>
         <div class="card-divider"></div>
         <p class="card-desc">Banks, building societies (mutual, demutualisation), credit unions (ABCUL, loan cap), NS&amp;I (Premium Bonds), Post Office, communication channels and switching.</p>
@@ -427,13 +438,14 @@ body {
             <div class="card-num">Topic 8</div>
             <div class="card-title">Consumer Protection</div>
           </div>
+        <span class="score-badge" id="score-t8"></span>
         </div>
         <div class="card-divider"></div>
         <p class="card-desc">Credit crunch, ring-fencing, PRA, FCA, Financial Ombudsman Service, FSCS (£85,000 limit), Competition and Markets Authority, voluntary codes of conduct.</p>
         <div class="card-actions">
           <a class="btn btn-quiz" href="quizzes/topic8.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>Quiz</a>
-          <a class="btn btn-doc" href="docs/Topic8_Summary.docx" download>📄 Summary</a>
-          <a class="btn btn-src" href="docs/Topic8_Source.pdf" target="_blank">📖 Source</a>
+          <a class="btn btn-doc" href="docs/Topic8_Summary.docx" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Summary</a>
+          <a class="btn btn-src" href="docs/Topic8_Source.pdf" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Source</a>
         </div>
       </div>
     </div>
@@ -460,6 +472,19 @@ function toggleTheme() {
   localStorage.setItem('theme', next);
   document.querySelector('.theme-btn').textContent = next === 'dark' ? '☀️' : '🌙';
 }
+</script>
+
+<script>
+function loadScores(){
+  ['1','2','5','6','7','8'].forEach(function(t){
+    try{
+      var d=JSON.parse(localStorage.getItem('topic'+t+'_last')||'null');
+      var el=document.getElementById('score-t'+t);
+      if(d&&el){el.textContent=d.score+'/'+d.total;el.className='score-badge '+(d.pct>=60?'pass':'fail');el.style.display='inline-block';}
+    }catch(e){}
+  });
+}
+loadScores();
 </script>
 </body>
 </html>
