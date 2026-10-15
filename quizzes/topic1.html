@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark"><script>try{var _t=localStorage.getItem("theme");if(_t)document.documentElement.setAttribute("data-theme",_t);}catch(e){}</script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -185,7 +185,7 @@ function showResult(){
       <a class="btn-hub" href="../index.html">← Back to Hub</a>
     </div>`;
 }
-function toggleTheme(){const c=document.documentElement.getAttribute('data-theme')||'dark';const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.querySelector('.theme-btn').textContent=n==='dark'?'☀️':'🌙';}
+function toggleTheme(){const c=document.documentElement.getAttribute('data-theme')||'dark';const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.querySelector('.theme-btn').textContent=n==='dark'?'☀️':'🌙';try{localStorage.setItem('theme',n);}catch(e){}}
 render();
 </script>
 </body>
