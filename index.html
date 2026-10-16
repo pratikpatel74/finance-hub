@@ -91,6 +91,9 @@ body {
   border: 1px solid var(--gold-dim); border-radius: 4px; padding: 2px 8px;
 }
 .topbar-right { display: flex; align-items: center; gap: 14px; }
+.home-link { display:inline-flex; align-items:center; height:34px; padding:0 12px; border-radius:8px; background:var(--surface); border:1px solid var(--border); color:var(--muted); font-size:0.74rem; font-weight:700; text-decoration:none; white-space:nowrap; }
+.home-link:hover { border-color:var(--border-hi); color:var(--text); }
+@media (max-width:540px) { .topbar-right { gap:8px; } }
 .theme-btn {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 8px; width: 34px; height: 34px;
@@ -311,6 +314,7 @@ body {
     Financial Services Study Hub
   </div>
   <div class="topbar-right">
+    <a class="home-link" href="https://alevel-study-hubs.netlify.app/">← All subjects</a>
     <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">☀️</button>
   </div>
 </div>
