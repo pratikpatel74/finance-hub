@@ -1,0 +1,228 @@
+<html lang="en" data-theme="dark"><script>try{var _t=localStorage.getItem("theme");if(_t)document.documentElement.setAttribute("data-theme",_t);}catch(e){}</script>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LO2: The Personal Life Cycle — Finance Hub</title>
+<style>
+:root {
+  --accent: #38bdf8;
+  --bg: #0f1117; --card: #1a1d27; --border: #2a2d3a;
+  --text: #e2e8f0; --muted: #94a3b8; --sub: #64748b;
+  --tag-bg: rgba(255,255,255,0.06);
+  --table-head: rgba(255,255,255,0.07);
+}
+:root[data-theme="light"] {
+  --accent: #0ea5e9;
+  --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0;
+  --text: #1e293b; --muted: #475569; --sub: #94a3b8;
+  --tag-bg: rgba(0,0,0,0.05);
+  --table-head: rgba(0,0,0,0.05);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;
+  min-height:100vh;padding-bottom:4rem}
+/* topbar */
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 1.5rem;background:var(--card);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.topbar-brand{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1rem;
+  text-decoration:none;color:var(--text)}
+.topbar-brand span{background:var(--accent);color:#000;border-radius:4px;
+  padding:.15rem .45rem;font-size:.75rem;font-weight:800;letter-spacing:.5px}
+.topbar-right{display:flex;align-items:center;gap:.75rem}
+.back-btn{display:flex;align-items:center;gap:.4rem;padding:.4rem .9rem;
+  border-radius:8px;border:1px solid var(--border);background:transparent;
+  color:var(--muted);font-size:.85rem;cursor:pointer;text-decoration:none;
+  transition:all .2s}
+.back-btn:hover{border-color:var(--accent);color:var(--accent)}
+.theme-btn{padding:.4rem .7rem;border-radius:8px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);cursor:pointer;font-size:.9rem;
+  transition:all .2s}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+.dl-btn{display:flex;align-items:center;gap:.4rem;padding:.4rem .9rem;
+  border-radius:8px;border:1px solid var(--border);background:transparent;
+  color:var(--muted);font-size:.85rem;cursor:pointer;text-decoration:none;
+  transition:all .2s}
+.dl-btn:hover{border-color:var(--accent);color:var(--accent)}
+/* hero */
+.hero{padding:2.5rem 1.5rem 1.5rem;max-width:820px;margin:0 auto}
+.hero-label{font-size:.75rem;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--accent);font-weight:700;margin-bottom:.5rem}
+.hero h1{font-size:2rem;font-weight:800;line-height:1.2;margin-bottom:.5rem}
+.hero-sub{color:var(--muted);font-size:.95rem}
+.draft-badge{display:inline-block;margin-top:.75rem;background:rgba(251,191,36,.15);
+  color:#fbbf24;border:1px solid rgba(251,191,36,.3);border-radius:6px;
+  padding:.2rem .6rem;font-size:.75rem;font-weight:600}
+/* content */
+.content{max-width:820px;margin:0 auto;padding:0 1.5rem}
+.section{margin:2rem 0}
+.section h2{font-size:1.2rem;font-weight:700;margin-bottom:1rem;
+  padding-bottom:.5rem;border-bottom:2px solid var(--border);
+  display:flex;align-items:center;gap:.5rem}
+.section h2::before{content:'';width:4px;height:1.1em;background:var(--accent);
+  border-radius:2px;flex-shrink:0}
+.section h3{font-size:1rem;font-weight:600;color:var(--accent);margin:.75rem 0 .4rem}
+/* lists */
+ul.notes{list-style:none;padding:0;display:flex;flex-direction:column;gap:.5rem}
+ul.notes li{padding:.5rem .75rem .5rem 1rem;border-left:3px solid var(--accent);
+  background:var(--tag-bg);border-radius:0 6px 6px 0;font-size:.925rem}
+ul.notes li strong{color:var(--accent)}
+/* key fact box */
+.kf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin:.75rem 0}
+.kf{background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:1rem;text-align:center}
+.kf .val{font-size:1.5rem;font-weight:800;color:var(--accent)}
+.kf .lbl{font-size:.8rem;color:var(--muted);margin-top:.25rem}
+/* tables */
+.tbl-wrap{overflow-x:auto;margin:.75rem 0;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+thead tr{background:var(--table-head)}
+th{padding:.6rem .9rem;text-align:left;font-weight:600;color:var(--muted);
+  font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+td{padding:.6rem .9rem;border-top:1px solid var(--border)}
+tr:hover td{background:var(--tag-bg)}
+/* exam tip */
+.tip{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);
+  border-radius:10px;padding:.85rem 1rem;margin:.75rem 0;font-size:.9rem}
+.tip::before{content:'📌 Exam tip: ';font-weight:700;color:#fbbf24}
+/* diagrams */
+.diagram{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1.25rem;margin:.75rem 0;overflow-x:auto}
+.diagram-title{font-size:.8rem;text-transform:uppercase;letter-spacing:1px;
+  color:var(--muted);margin-bottom:1rem;font-weight:600}
+svg text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+/* function cards */
+.fn-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:.75rem 0}
+.fn-card{background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:1rem;display:flex;gap:.75rem;align-items:flex-start}
+.fn-icon{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem}
+.fn-title{font-weight:700;font-size:.9rem;color:var(--accent)}
+.fn-desc{font-size:.83rem;color:var(--muted);margin-top:.2rem}
+/* checklist */
+.checklist{list-style:none;padding:0;display:flex;flex-direction:column;gap:.4rem}
+.checklist li{display:flex;align-items:flex-start;gap:.5rem;font-size:.9rem;
+  padding:.35rem 0}
+.checklist li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0;
+  margin-top:.05rem}
+/* flow diagram boxes */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;margin:.75rem 0}
+.flow-box{background:var(--card);border:1px solid var(--accent);border-radius:8px;
+  padding:.5rem .9rem;font-size:.85rem;font-weight:600}
+.flow-arrow{color:var(--accent);font-size:1.1rem;flex-shrink:0}
+/* regulation card */
+.reg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.75rem;margin:.75rem 0}
+.reg-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem}
+.reg-card .reg-name{font-weight:700;color:var(--accent);margin-bottom:.35rem}
+.reg-card .reg-full{font-size:.78rem;color:var(--sub);margin-bottom:.5rem}
+.reg-card p{font-size:.85rem;color:var(--muted)}
+/* stage cards for life cycle */
+.stages{display:flex;flex-direction:column;gap:.6rem;margin:.75rem 0}
+.stage{background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:.85rem 1rem;display:flex;gap:1rem;align-items:flex-start}
+.stage-age{background:var(--accent);color:#000;border-radius:6px;
+  padding:.2rem .5rem;font-size:.75rem;font-weight:800;white-space:nowrap;flex-shrink:0}
+.stage-title{font-weight:700;font-size:.9rem;margin-bottom:.2rem}
+.stage-desc{font-size:.83rem;color:var(--muted)}
+/* responsive */
+@media(max-width:600px){
+  .fn-grid{grid-template-columns:1fr}
+  .hero h1{font-size:1.5rem}
+  .kf-grid{grid-template-columns:1fr 1fr}
+  .topbar-brand{font-size:.9rem}
+}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a class="topbar-brand" href="../index.html"><span>LO2</span>The Personal Life Cycle</a>
+  <div class="topbar-right">
+    <a class="back-btn" href="../index.html">← Hub</a>
+    <a class="dl-btn" href="Topic2_Summary.docx" download>⬇ .docx</a>
+    <button class="theme-btn" onclick="(function(){var t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('theme',t);}catch(e){}})()" title="Toggle theme">☀︎</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">LO2 · LIBF CeFS Unit 1</div>
+  <h1>The Personal Life Cycle</h1>
+  <p class="hero-sub">How financial needs change across life stages — savings, pensions, mortgages and protection.</p>
+</div>
+<div class="content">
+
+  <div class="section">
+    <h2>1. Life Stages &amp; Financial Needs</h2>
+    <div class="stages">
+      <div class="stage"><span class="stage-age">0–18</span><div><div class="stage-title">Childhood</div><div class="stage-desc">Junior ISA (£9,000/yr allowance, managed by parents). No borrowing products. Financial education begins.</div></div></div>
+      <div class="stage"><span class="stage-age">18–25</span><div><div class="stage-title">Young Adult</div><div class="stage-desc">First current account · Student bank account (interest-free overdraft) · Student loans (repay above £25,000/yr threshold) · Lifetime ISA (18–39, 25% government bonus) · Building credit history.</div></div></div>
+      <div class="stage"><span class="stage-age">25–40</span><div><div class="stage-title">Early Career</div><div class="stage-desc">Regular income; saving grows · Cash/S&S ISA · Workplace pension (auto-enrolment) · First mortgage (5–20% deposit) · Protection: life insurance, income protection.</div></div></div>
+      <div class="stage"><span class="stage-age">30–50</span><div><div class="stage-title">Family Stage</div><div class="stage-desc">Higher spending on housing, childcare, education · Life insurance critical · Junior ISAs for children · Wills and lasting power of attorney.</div></div></div>
+      <div class="stage"><span class="stage-age">50–65</span><div><div class="stage-title">Pre-Retirement</div><div class="stage-desc">Maximise pension contributions · Mortgage may be repaid · Review life cover · Equity release may be considered.</div></div></div>
+      <div class="stage"><span class="stage-age">65+</span><div><div class="stage-title">Retirement</div><div class="stage-desc">State Pension: £221.20/week (2024/25, 35 NI years needed) · Annuity or income drawdown · Inheritance planning: IHT threshold £325,000.</div></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>2. ISA Types at a Glance</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ISA Type</th><th>Min Age</th><th>Annual Limit</th><th>Key Feature</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cash ISA</strong></td><td>16</td><td>£20,000</td><td>Interest tax-free; like a savings account</td></tr>
+          <tr><td><strong>Stocks &amp; Shares ISA</strong></td><td>18</td><td>£20,000</td><td>Invest in shares/funds tax-free; higher risk</td></tr>
+          <tr><td><strong>Lifetime ISA (LISA)</strong></td><td>18–39</td><td>£4,000</td><td>25% government bonus (max £1,000/yr); first home or retirement only</td></tr>
+          <tr><td><strong>Innovative Finance ISA</strong></td><td>18</td><td>£20,000</td><td>Peer-to-peer lending, tax-free</td></tr>
+          <tr><td><strong>Junior ISA</strong></td><td>Under 18</td><td>£9,000</td><td>Cannot access until age 18; managed by parent/guardian</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tip">All ISA types share a single £20,000 annual allowance (except Junior ISA which is separate). The LISA has a 25% withdrawal penalty if used for anything other than a first home or retirement.</div>
+  </div>
+
+  <div class="section">
+    <h2>3. Pension Types</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Who Provides</th><th>Who Bears Risk</th><th>Key Detail</th></tr></thead>
+        <tbody>
+          <tr><td><strong>State Pension</strong></td><td>Government</td><td>Government</td><td>£221.20/week (2024/25); 35 NI qualifying years needed</td></tr>
+          <tr><td><strong>Defined Benefit (Final Salary)</strong></td><td>Employer</td><td>Employer</td><td>Based on salary × years of service; predictable income; rare in private sector</td></tr>
+          <tr><td><strong>Defined Contribution (Money Purchase)</strong></td><td>Employer / individual</td><td>Employee</td><td>Pot grows via investments; income depends on performance</td></tr>
+          <tr><td><strong>SIPP (Self-Invested Personal Pension)</strong></td><td>Individual</td><td>Individual</td><td>Wider investment choice; suitable for self-employed</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tip">Auto-enrolment (since 2012): employers must enrol eligible workers aged 22–state pension age earning over £10,000. Minimum total contribution: 8% (employer min 3%, employee min 5%).</div>
+  </div>
+
+  <div class="section">
+    <h2>4. Mortgage Types</h2>
+    <ul class="notes">
+      <li><strong>Repayment</strong> — monthly payments cover capital + interest; fully repaid by end of term. Most common and lowest risk.</li>
+      <li><strong>Interest-only</strong> — payments cover interest only; capital must be repaid at end (via investment). Higher risk.</li>
+      <li><strong>Fixed rate</strong> — rate fixed for initial period (2, 5 years typical); predictable payments.</li>
+      <li><strong>Variable / Tracker</strong> — rate can change; tracker follows Bank of England base rate.</li>
+      <li><strong>LTV (Loan-to-Value)</strong> — loan ÷ property value. Lower LTV = lower risk for lender = better rate for you.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>5. Protection Products</h2>
+    <ul class="notes">
+      <li><strong>Life insurance (term)</strong> — lump sum on death within a fixed period; protects dependants.</li>
+      <li><strong>Whole of life</strong> — pays whenever death occurs; more expensive.</li>
+      <li><strong>Income protection</strong> — replaces ~50–60% of income if unable to work due to illness/injury.</li>
+      <li><strong>Critical illness cover</strong> — lump sum on diagnosis of specified serious illness (cancer, heart attack, stroke).</li>
+      <li><strong>Buildings &amp; contents insurance</strong> — required by mortgage lenders; covers structure and possessions.</li>
+    </ul>
+  </div>
+
+</div>
+<script>
+// sync theme with hub
+try{var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);}catch(e){}
+</script>
+</body>
+</html>

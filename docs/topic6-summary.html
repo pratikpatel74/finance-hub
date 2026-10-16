@@ -1,0 +1,255 @@
+<html lang="en" data-theme="dark"><script>try{var _t=localStorage.getItem("theme");if(_t)document.documentElement.setAttribute("data-theme",_t);}catch(e){}</script>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LO3: Borrowing Products — Finance Hub</title>
+<style>
+:root {
+  --accent: #34d399;
+  --bg: #0f1117; --card: #1a1d27; --border: #2a2d3a;
+  --text: #e2e8f0; --muted: #94a3b8; --sub: #64748b;
+  --tag-bg: rgba(255,255,255,0.06);
+  --table-head: rgba(255,255,255,0.07);
+}
+:root[data-theme="light"] {
+  --accent: #059669;
+  --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0;
+  --text: #1e293b; --muted: #475569; --sub: #94a3b8;
+  --tag-bg: rgba(0,0,0,0.05);
+  --table-head: rgba(0,0,0,0.05);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;
+  min-height:100vh;padding-bottom:4rem}
+/* topbar */
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 1.5rem;background:var(--card);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.topbar-brand{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1rem;
+  text-decoration:none;color:var(--text)}
+.topbar-brand span{background:var(--accent);color:#000;border-radius:4px;
+  padding:.15rem .45rem;font-size:.75rem;font-weight:800;letter-spacing:.5px}
+.topbar-right{display:flex;align-items:center;gap:.75rem}
+.back-btn{display:flex;align-items:center;gap:.4rem;padding:.4rem .9rem;
+  border-radius:8px;border:1px solid var(--border);background:transparent;
+  color:var(--muted);font-size:.85rem;cursor:pointer;text-decoration:none;
+  transition:all .2s}
+.back-btn:hover{border-color:var(--accent);color:var(--accent)}
+.theme-btn{padding:.4rem .7rem;border-radius:8px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);cursor:pointer;font-size:.9rem;
+  transition:all .2s}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+.dl-btn{display:flex;align-items:center;gap:.4rem;padding:.4rem .9rem;
+  border-radius:8px;border:1px solid var(--border);background:transparent;
+  color:var(--muted);font-size:.85rem;cursor:pointer;text-decoration:none;
+  transition:all .2s}
+.dl-btn:hover{border-color:var(--accent);color:var(--accent)}
+/* hero */
+.hero{padding:2.5rem 1.5rem 1.5rem;max-width:820px;margin:0 auto}
+.hero-label{font-size:.75rem;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--accent);font-weight:700;margin-bottom:.5rem}
+.hero h1{font-size:2rem;font-weight:800;line-height:1.2;margin-bottom:.5rem}
+.hero-sub{color:var(--muted);font-size:.95rem}
+.draft-badge{display:inline-block;margin-top:.75rem;background:rgba(251,191,36,.15);
+  color:#fbbf24;border:1px solid rgba(251,191,36,.3);border-radius:6px;
+  padding:.2rem .6rem;font-size:.75rem;font-weight:600}
+/* content */
+.content{max-width:820px;margin:0 auto;padding:0 1.5rem}
+.section{margin:2rem 0}
+.section h2{font-size:1.2rem;font-weight:700;margin-bottom:1rem;
+  padding-bottom:.5rem;border-bottom:2px solid var(--border);
+  display:flex;align-items:center;gap:.5rem}
+.section h2::before{content:'';width:4px;height:1.1em;background:var(--accent);
+  border-radius:2px;flex-shrink:0}
+.section h3{font-size:1rem;font-weight:600;color:var(--accent);margin:.75rem 0 .4rem}
+/* lists */
+ul.notes{list-style:none;padding:0;display:flex;flex-direction:column;gap:.5rem}
+ul.notes li{padding:.5rem .75rem .5rem 1rem;border-left:3px solid var(--accent);
+  background:var(--tag-bg);border-radius:0 6px 6px 0;font-size:.925rem}
+ul.notes li strong{color:var(--accent)}
+/* key fact box */
+.kf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin:.75rem 0}
+.kf{background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:1rem;text-align:center}
+.kf .val{font-size:1.5rem;font-weight:800;color:var(--accent)}
+.kf .lbl{font-size:.8rem;color:var(--muted);margin-top:.25rem}
+/* tables */
+.tbl-wrap{overflow-x:auto;margin:.75rem 0;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+thead tr{background:var(--table-head)}
+th{padding:.6rem .9rem;text-align:left;font-weight:600;color:var(--muted);
+  font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+td{padding:.6rem .9rem;border-top:1px solid var(--border)}
+tr:hover td{background:var(--tag-bg)}
+/* exam tip */
+.tip{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);
+  border-radius:10px;padding:.85rem 1rem;margin:.75rem 0;font-size:.9rem}
+.tip::before{content:'📌 Exam tip: ';font-weight:700;color:#fbbf24}
+/* diagrams */
+.diagram{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1.25rem;margin:.75rem 0;overflow-x:auto}
+.diagram-title{font-size:.8rem;text-transform:uppercase;letter-spacing:1px;
+  color:var(--muted);margin-bottom:1rem;font-weight:600}
+svg text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+/* function cards */
+.fn-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:.75rem 0}
+.fn-card{background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:1rem;display:flex;gap:.75rem;align-items:flex-start}
+.fn-icon{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem}
+.fn-title{font-weight:700;font-size:.9rem;color:var(--accent)}
+.fn-desc{font-size:.83rem;color:var(--muted);margin-top:.2rem}
+/* checklist */
+.checklist{list-style:none;padding:0;display:flex;flex-direction:column;gap:.4rem}
+.checklist li{display:flex;align-items:flex-start;gap:.5rem;font-size:.9rem;
+  padding:.35rem 0}
+.checklist li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0;
+  margin-top:.05rem}
+/* flow diagram boxes */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;margin:.75rem 0}
+.flow-box{background:var(--card);border:1px solid var(--accent);border-radius:8px;
+  padding:.5rem .9rem;font-size:.85rem;font-weight:600}
+.flow-arrow{color:var(--accent);font-size:1.1rem;flex-shrink:0}
+/* regulation card */
+.reg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.75rem;margin:.75rem 0}
+.reg-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem}
+.reg-card .reg-name{font-weight:700;color:var(--accent);margin-bottom:.35rem}
+.reg-card .reg-full{font-size:.78rem;color:var(--sub);margin-bottom:.5rem}
+.reg-card p{font-size:.85rem;color:var(--muted)}
+/* stage cards for life cycle */
+.stages{display:flex;flex-direction:column;gap:.6rem;margin:.75rem 0}
+.stage{background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:.85rem 1rem;display:flex;gap:1rem;align-items:flex-start}
+.stage-age{background:var(--accent);color:#000;border-radius:6px;
+  padding:.2rem .5rem;font-size:.75rem;font-weight:800;white-space:nowrap;flex-shrink:0}
+.stage-title{font-weight:700;font-size:.9rem;margin-bottom:.2rem}
+.stage-desc{font-size:.83rem;color:var(--muted)}
+/* responsive */
+@media(max-width:600px){
+  .fn-grid{grid-template-columns:1fr}
+  .hero h1{font-size:1.5rem}
+  .kf-grid{grid-template-columns:1fr 1fr}
+  .topbar-brand{font-size:.9rem}
+}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a class="topbar-brand" href="../index.html"><span>LO3</span>Borrowing Products</a>
+  <div class="topbar-right">
+    <a class="back-btn" href="../index.html">← Hub</a>
+    <a class="dl-btn" href="Topic6_Summary.docx" download>⬇ .docx</a>
+    <button class="theme-btn" onclick="(function(){var t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('theme',t);}catch(e){}})()" title="Toggle theme">☀︎</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">LO3 (Borrowing) · LIBF CeFS Unit 1</div>
+  <h1>Borrowing Products</h1>
+  <p class="hero-sub">APR, overdrafts, credit cards, personal loans, payday loans and credit history.</p>
+</div>
+<div class="content">
+
+  <div class="section">
+    <h2>1. APR — The Cost of Borrowing</h2>
+    <ul class="notes">
+      <li><strong>APR (Annual Percentage Rate)</strong> — standardised measure including interest rate + compulsory fees, as a yearly %. Required in all adverts.</li>
+      <li><strong>Representative APR</strong> — the rate offered to at least 51% of successful applicants. Your actual rate may be higher.</li>
+      <li><strong>EAR (Equivalent Annual Rate)</strong> — used specifically for overdrafts. Since 2020, must also be quoted as APR.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>2. Overdrafts</h2>
+    <div class="fn-grid">
+      <div class="fn-card"><div class="fn-icon">✅</div><div>
+        <div class="fn-title">Arranged (Authorised)</div>
+        <div class="fn-desc">Pre-agreed limit; charged at a set EAR/APR. Cheaper option.</div>
+      </div></div>
+      <div class="fn-card"><div class="fn-icon">⚠️</div><div>
+        <div class="fn-title">Unarranged (Unauthorised)</div>
+        <div class="fn-desc">Over balance without agreement. Since 2020 FCA rules: single interest rate, no daily fees. More expensive.</div>
+      </div></div>
+    </div>
+    <div class="tip">Interest is calculated daily: (overdraft amount × annual rate) ÷ 365. When overdrawn, the bank is creditor, you are debtor.</div>
+  </div>
+
+  <div class="section">
+    <h2>3. How a Credit Card Transaction Works</h2>
+    <div class="diagram">
+      <div class="diagram-title">The Four Parties</div>
+      <div class="flow">
+        <div class="flow-box">🧑 Cardholder<br><small style="color:var(--muted)">Makes purchase</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">🏪 Merchant<br><small style="color:var(--muted)">Accepts payment</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">🏦 Acquirer<br><small style="color:var(--muted)">Merchant's bank</small></div>
+        <span class="flow-arrow">↔</span>
+        <div class="flow-box">💳 Issuer<br><small style="color:var(--muted)">Card provider (your bank)</small></div>
+      </div>
+      <p style="font-size:.83rem;color:var(--muted);margin-top:.75rem">Card brands (Visa, Mastercard) provide the network between acquirer and issuer.</p>
+    </div>
+    <ul class="notes">
+      <li><strong>Interest-free period:</strong> up to 56 days if full balance paid monthly. Interest applies from transaction date if only partial payment made.</li>
+      <li><strong>Minimum repayment:</strong> typically 1–2% of balance or £25 (whichever greater). Paying only the minimum incurs significant interest.</li>
+      <li><strong>Section 75 (Consumer Credit Act 1974):</strong> card issuer jointly liable for purchases of £100–£30,000 if goods/services not delivered or faulty.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>4. Types of Credit Card</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Best For</th><th>Watch Out For</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Low APR</strong></td><td>Carrying a balance month-to-month</td><td>Fewer rewards/features</td></tr>
+          <tr><td><strong>0% Balance Transfer</strong></td><td>Consolidating existing card debt</td><td>Transfer fee (1–3%); revert rate after promo period</td></tr>
+          <tr><td><strong>Cashback</strong></td><td>Spending if you pay in full</td><td>Higher APR</td></tr>
+          <tr><td><strong>Reward/Loyalty</strong></td><td>Points, air miles</td><td>Higher APR; rewards lost if carrying balance</td></tr>
+          <tr><td><strong>0% Purchase</strong></td><td>Large planned purchases</td><td>High revert rate</td></tr>
+          <tr><td><strong>Charge Card</strong></td><td>No preset limit; full repayment</td><td>Annual fee; late payment penalty</td></tr>
+          <tr><td><strong>Store Card</strong></td><td>In-store discounts</td><td>Very high APR</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>5. Personal Loans</h2>
+    <ul class="notes">
+      <li>Fixed sum, repaid in equal monthly instalments over agreed term (typically 1–7 years).</li>
+      <li>Typical amounts: £1,000–£25,000. Fixed APR — no surprises on repayments.</li>
+      <li>Unsecured: no collateral required. Early repayment permitted (penalty up to 2 months' interest).</li>
+      <li>Best for: large one-off purchases (car, home improvement) where structured repayment is preferred.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>6. Payday Loans (FCA Caps)</h2>
+    <div class="kf-grid">
+      <div class="kf"><div class="val">0.8%/day</div><div class="lbl">Max daily interest + fee rate (FCA 2014 cap)</div></div>
+      <div class="kf"><div class="val">100%</div><div class="lbl">Total cost cap — never repay more than twice the loan</div></div>
+      <div class="kf"><div class="val">£15</div><div class="lbl">Default fee cap</div></div>
+    </div>
+    <div class="tip">Payday loans can carry 1,000%+ representative APR due to the very short term. The FCA caps prevent the debt escalating out of control, but they remain high-risk.</div>
+  </div>
+
+  <div class="section">
+    <h2>7. Credit Reference Agencies (CRAs)</h2>
+    <ul class="notes">
+      <li>Three main UK CRAs: <strong>Experian</strong>, <strong>Equifax</strong>, <strong>TransUnion</strong> (formerly Callcredit).</li>
+      <li>Credit file holds: payment history, outstanding debts, electoral roll, CCJs, credit applications. Held for <strong>6 years</strong>.</li>
+      <li>CCJ (County Court Judgment): if ordered repayment unpaid within one month → registered for 6 years, significantly harming credit score.</li>
+      <li>Poor credit history = higher APRs or outright rejection. Good history = better rates.</li>
+    </ul>
+  </div>
+
+</div>
+<script>
+// sync theme with hub
+try{var _t=localStorage.getItem('theme');if(_t)document.documentElement.setAttribute('data-theme',_t);}catch(e){}
+</script>
+</body>
+</html>
